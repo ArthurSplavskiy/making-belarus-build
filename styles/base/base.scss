@@ -1,0 +1,29 @@
+html {
+  font-size: 10px;
+  @include media('>=desktop') {
+    font-size: calc(100vw / 1920 * 10);
+  }
+  @include media('<=laptop') {
+    font-size: calc(100vw / 1280 * 10);
+  }
+  @include media('<=tablet') {
+    font-size: calc(100vw / 768 * 10);
+  }
+  @include media('<=bigPhone') {
+    font-size: calc(100vw / 580 * 10);
+  }
+  @include media('<=phone') {
+    font-size: calc(100vw / 375 * 10);
+  }
+
+}
+
+body {
+  font-family: $manrope-font;
+}
+
+a {
+  color: inherit;
+  outline: none;
+  text-decoration: none;
+}
