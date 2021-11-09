@@ -16,6 +16,14 @@
 
 @import './components/preloader';
 
+@import './layout/scroll-indicator.scss';
+@import './layout/cursor.scss';
 @import './layout/noise.scss';
 @import './layout/header.scss';
 @import './layout/page-menu.scss';
+
+@import './sections/hero.scss';
+
+.preloader {
+    display: none;
+}

@@ -1,3 +1,62 @@
+
+/*
+ * Replace all SVG images with inline SVG
+ */
+function svgInline(){
+    const svgImages = document.querySelectorAll('img[src*="svg"]')
+
+    for(let i = 0; i < svgImages.length; i++) {
+      const img = svgImages[i]
+      const imgClass = img.getAttribute('class')
+      const imgID = img.getAttribute('id')
+      const imgURL = img.getAttribute('src')
+
+      fetch(imgURL)
+        .then((response) => {
+          return response;
+        })
+        .then((data) => {
+          console.log(data.body.getReader());
+      });
+    }
+    
+
+
+    // $('img[src*="svg"]').not('.preloader__img').each(function () {
+    //   let $img = $(this),
+    //     imgID = $img.attr('id'),
+    //     imgClass = $img.attr('class'),
+    //     imgURL = $img.attr('src');
+  
+    //   $.get(imgURL, function (data) {
+    //     // Get the SVG tag, ignore the rest
+    //     let $svg = $(data).find('svg');
+    //         if ($svg) {
+    //             $svg.find('path').removeAttr('style');
+    //             // Remove any invalid XML tags as per http://validator.w3.org
+    //             $svg.removeAttr('id x y version xmlns xml:space xmlns:a');
+    //             $svg.find("style").detach();
+    //             // Add replaced image ID to the new SVG
+    //             if (imgID !== undefined) $svg.attr('id', imgID);
+    //             // Add replaced image classes to the new SVG
+    //             if (imgClass !== undefined) $svg.attr('class', 'replaced__svg ' + imgClass);
+    //             else $svg.attr('class', 'replaced__svg');
+    //             // Check if the viewport is set, if the viewport is not set the SVG wont't scale.
+    //             /*if (!$svg.attr('viewBox') && $svg.attr('height') && $svg.attr('width')) {
+    //             $svg.attr('viewBox', '0 0 ' + $svg.attr('height') + ' ' + $svg.attr('width'));
+    //             }*/
+    //             // Replace image with new SVG
+    //             $img.replaceWith($svg);
+    //         }
+    //     }, 'xml');
+    // });
+}
+//svgInline();
+function vh() {
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
 class Split {
     constructor () {
         this.splitText = this.splitText
@@ -329,10 +388,70 @@ class Preloader {
     }
 }
 
+class HeroSection {
+    constructor () {
+        this.element = document.querySelector('.hero-section')
+        this.heroComposition = this.element.querySelector('.hero-composition')
+
+        this.heroFirstLines = this.heroComposition.querySelectorAll('.hero-composition__title')
+        this.heroFirstDescriptions = this.heroComposition.querySelectorAll('.hero-composition__description')
+        this.heroMap = this.heroComposition.querySelector('.hero-composition__map')
+
+        this.init()
+    }
+
+    init () {
+        this.timelineAnimation()
+    }
+
+    timelineAnimation() {
+        this.timeline = gsap.timeline()
+
+        ScrollTrigger.create({
+            trigger: this.element,
+            animation: this.timeline,
+
+            start: "top top",
+            end: '+=2000',
+
+            pin: true,
+            scrub: 1,
+        });
+
+        
+
+        this.timeline.fromTo(this.heroFirstDescriptions, {
+            autoAlpha: 1
+        }, {
+            autoAlpha: 0
+        })
+
+        this.timeline.to(this.heroFirstLines[0], {
+            x: - (((window.innerWidth - (this.heroFirstLines[1].clientWidth / 2)) / 2) + (this.heroFirstLines[1].clientWidth /2 ))
+        }, '>')
+        this.timeline.to(this.heroFirstLines[1], {
+            x: ((window.innerWidth - this.heroFirstLines[1].clientWidth) / 2) + this.heroFirstLines[1].clientWidth
+        }, '<')
+        this.timeline.to(this.heroFirstLines[2], {
+            x: - (((window.innerWidth - this.heroFirstLines[1].clientWidth) / 2) + this.heroFirstLines[1].clientWidth)
+        }, '<')
+
+        this.timeline.fromTo(this.heroMap.children[0], {
+            scale: 0,
+            autoAlpha: 0.1
+        }, {
+            scale: 15,
+            autoAlpha: 1,
+            ease: Power4.easeIn
+        }, '<')
+
+    }
+}
+
 class App {
     constructor () {
-        this.init()
         this.addEventListeners()
+        this.onResize()
     }
 
     init () {
@@ -340,6 +459,9 @@ class App {
         this.preloader = new Preloader()
         this.animation = new Animation()
         this.cursor = new Cursor()
+
+        // SECTIONS
+        this.heroSection = new HeroSection()
     }
 
     pageLoad () {
@@ -348,16 +470,29 @@ class App {
         const preloaderCoverTimeline = gsap.timeline()
         preloaderCoverTimeline.fromTo(this.preloader.preloaderCover, { autoAlpha: 1 }, { autoAlpha: 0 })
         preloaderCoverTimeline.call(_ => this.preloader.preloaderCover.remove())
+    }
+
+    contentDomLoad () {
+        this.init()
 
         this.removeEventListeners()
     }
 
+    onResize () {
+        //CUSTOM VH
+        vh()
+        //
+    }
+
     addEventListeners () {
         window.addEventListener('load', this.pageLoad.bind(this))
+        window.addEventListener('resize', this.onResize.bind(this))
+        document.addEventListener('DOMContentLoaded', this.contentDomLoad.bind(this))
     }
 
     removeEventListeners () {
         window.removeEventListener('load', this.pageLoad.bind(this))
+        document.removeEventListener('DOMContentLoaded', this.contentDomLoad.bind(this))
     }
 }
 

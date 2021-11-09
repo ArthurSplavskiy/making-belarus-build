@@ -1,0 +1,52 @@
+.c-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: z('cursor');
+
+    & * {
+        pointer-events: none;
+    }
+
+    @media(any-hover: none) {
+        display: none;
+    }
+
+    .page-cursor {
+        transform: translate(-50%, -50%) rotate(45deg);
+        width: 14.4px;
+        height: 14.4px;
+        background: rgba(159, 19, 7, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+    }
+
+    &__slider {
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        display: none;
+
+        
+
+        .arrow {
+            transform-origin: 50% 50%;
+        }
+        &.right {
+            .arrow {
+                transform: rotate(-180deg);
+            }
+        }
+    }
+
+    &.above-slider {
+
+        .page-cursor {
+            transform: scale(0);
+        }
+
+        .c-cursor__slider {
+            display: block;
+            @include media('<=bigPhone') {
+                display: none;
+            }
+        }
+    }
+}

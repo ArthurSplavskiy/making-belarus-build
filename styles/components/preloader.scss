@@ -3,6 +3,7 @@
 
   overflow: hidden;
   background: $color-redbg;
+  z-index: z('preloader');
 
   &__wrapper {
     width: 100%;
@@ -11,8 +12,6 @@
     ._container {
       width: auto;
       height: 100%;
-      position: relative;
-      z-index: 2;
     }
   }
 
@@ -116,6 +115,7 @@
 
     width: 56.2rem;
     height: 56.2rem;
+    
     @include media('>tablet', '<desktop') {
       @media(max-height: 700px) {
         width: 40.8rem;

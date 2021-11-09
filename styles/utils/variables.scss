@@ -1,6 +1,9 @@
 $color-white:#fff;
 $color-black:#000;
 $color-redbg: #9F1307;
+$color-grey: #161616;
+$color-grey-2: #1B1B1B;
+$color-redtext:#BC271A;
 
 $ramillas-font: 'Ramillas';
 $manrope-font: 'Manrope';
@@ -8,8 +11,11 @@ $manrope-font: 'Manrope';
 $easy-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
 
 $z-indexes: (
+  'cursor',
   'header',
   'noise',
   'page-menu',
+  'preloader',
+  'scroll-indicator',
   'page'
 );
