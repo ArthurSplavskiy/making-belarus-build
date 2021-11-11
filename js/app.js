@@ -52,10 +52,6 @@ function svgInline(){
     // });
 }
 //svgInline();
-function vh() {
-    const vh = window.innerHeight * 0.01;
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-}
 
 class Split {
     constructor () {
@@ -393,6 +389,8 @@ class HeroSection {
         this.element = document.querySelector('.hero-section')
         this.heroComposition = this.element.querySelector('.hero-composition')
 
+        this.timelineSection = document.querySelector('.timeline-section')
+
         this.heroFirstLines = this.heroComposition.querySelectorAll('.hero-composition__title')
         this.heroFirstDescriptions = this.heroComposition.querySelectorAll('.hero-composition__description')
         this.heroMap = this.heroComposition.querySelector('.hero-composition__map')
@@ -412,7 +410,7 @@ class HeroSection {
             animation: this.timeline,
 
             start: "top top",
-            end: '+=2000',
+            end: '+=8000',
 
             pin: true,
             scrub: 1,
@@ -423,27 +421,84 @@ class HeroSection {
         this.timeline.fromTo(this.heroFirstDescriptions, {
             autoAlpha: 1
         }, {
+            duration: 1,
             autoAlpha: 0
         })
 
         this.timeline.to(this.heroFirstLines[0], {
-            x: - (((window.innerWidth - (this.heroFirstLines[1].clientWidth / 2)) / 2) + (this.heroFirstLines[1].clientWidth /2 ))
+            x: - (((window.innerWidth - (this.heroFirstLines[1].clientWidth / 2)) / 2) + (this.heroFirstLines[1].clientWidth /2 )),
+            ease: Power1.easeIn,
+            duration: 2
         }, '>')
         this.timeline.to(this.heroFirstLines[1], {
-            x: ((window.innerWidth - this.heroFirstLines[1].clientWidth) / 2) + this.heroFirstLines[1].clientWidth
+            x: ((window.innerWidth - this.heroFirstLines[1].clientWidth) / 2) + this.heroFirstLines[1].clientWidth,
+            ease: Power1.easeIn,
+            duration: 2
         }, '<')
         this.timeline.to(this.heroFirstLines[2], {
-            x: - (((window.innerWidth - this.heroFirstLines[1].clientWidth) / 2) + this.heroFirstLines[1].clientWidth)
+            x: - (((window.innerWidth - this.heroFirstLines[1].clientWidth) / 2) + this.heroFirstLines[1].clientWidth),
+            ease: Power1.easeIn,
+            duration: 2
         }, '<')
 
         this.timeline.fromTo(this.heroMap.children[0], {
             scale: 0,
             autoAlpha: 0.1
         }, {
-            scale: 15,
+            scale: 18,
             autoAlpha: 1,
-            ease: Power4.easeIn
+            ease: Power4.easeIn,
+            duration: 2.5
+        }, '=-1.5')
+
+        this.timeline.to(this.element, {
+            y: - (window.innerHeight)
+        })
+
+        this.timeline.fromTo(this.timelineSection, {
+            filter: 'brightness(0)'
+        }, {
+            filter: 'brightness(1)'
         }, '<')
+
+    }
+}
+class TimelineSection {
+    constructor () {
+        this.element = document.querySelector('.timeline-section')
+        this.elementWrapper = this.element.querySelector('.timeline-section__wrapper')
+        this.elementScroll = this.element.querySelector('.scroll-container')
+
+        this.init()
+    }
+
+    init () {
+        this.scroll()
+    }
+
+    scroll () {
+        this.scrollTimeline = gsap.timeline({ defaults: {ease: 'none'} })
+
+        ScrollTrigger.create({
+            trigger: this.elementWrapper,
+            animation: this.scrollTimeline,
+
+            start: "+=8000",
+            end: '20000px 100%',
+
+            markers: true,
+            scrub: 1,
+        });
+        
+        this.scrollTimeline.fromTo(this.elementScroll, {
+            x: 0,
+        }, {
+            x: - (this.elementScroll.scrollWidth - window.innerWidth),
+        })
+        
+        // this.scrollTimeline.call(_ => {
+        //     console.log('end')
+        // })
 
     }
 }
@@ -462,6 +517,7 @@ class App {
 
         // SECTIONS
         this.heroSection = new HeroSection()
+        this.timelineSection = new TimelineSection()
     }
 
     pageLoad () {
@@ -479,9 +535,6 @@ class App {
     }
 
     onResize () {
-        //CUSTOM VH
-        vh()
-        //
     }
 
     addEventListeners () {

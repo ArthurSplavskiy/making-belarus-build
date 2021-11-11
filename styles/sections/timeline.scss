@@ -1,0 +1,27 @@
+.timeline-section {
+    color: $color-white;
+    height: 100vh;
+    width: 100%;
+    background: grey;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: z('timeline-section');
+
+    &__wrapper {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: column;
+    }
+
+    .scroll-container {
+        background: tomato;
+        font-size: 12rem;
+        //white-space: nowrap;
+        height: 100vh;
+        width: 50vw;
+    }
+}

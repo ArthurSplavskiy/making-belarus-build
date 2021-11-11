@@ -1,7 +1,7 @@
 .hero-section {
-    @include vh();
-
+    height: 100vh;
     overflow: hidden;
+    z-index: z('hero-section');
 
     &__wrapper {
         position: relative;
@@ -48,10 +48,6 @@
            top: 50%;
            left: 50%;
            transform: translate(-50%, -50%);
-
-        //    .map-svg {
-        //        opacity: 0;
-        //    }
         }
 
         &__line {

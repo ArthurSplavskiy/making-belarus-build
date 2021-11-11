@@ -144,7 +144,9 @@ table {
 .preloader__slide,
 .page-menu__card-bg,
 .hero-section__bg,
-.hero-section__bg img {
+.hero-section__bg img,
+.timeline-section .scroll-container .parallax-item_img-cover img,
+.timeline-section .scroll-container .parallax-item__img img {
   height: 100%;
   left: 0;
   position: absolute;
@@ -226,6 +228,13 @@ table {
   transition-property: transform, -webkit-transform;
 }
 
+.timeline-section .scroll-container .parallax-item__img-text {
+  font-family: "Ramillas";
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 2.24rem;
+}
+
 .preloader__button {
   font-family: "Ramillas";
   font-size: 1.6rem;
@@ -259,7 +268,8 @@ table {
 .timer__item:first-child .timer__item-date:after,
 .timer__item:nth-child(2) .timer__item-date:after,
 .timer__item-date,
-.hero-section .hero-composition__title {
+.hero-section .hero-composition__title,
+.timeline-section .scroll-container__bg {
   font-family: "Ramillas";
   font-size: 12.4rem;
   font-weight: 400;
@@ -287,6 +297,13 @@ table {
   font-size: 1.6rem;
   font-weight: 400;
   line-height: 2.56rem;
+}
+
+.timeline-section .scroll-container .parallax-item_text p {
+  font-family: "Manrope";
+  font-size: 2.4rem;
+  font-weight: 400;
+  line-height: 3.84rem;
 }
 
 ._container {
@@ -322,6 +339,8 @@ body {
   font-family: "Manrope";
   cursor: none;
   background: #9F1307;
+  -ms-scroll-chaining: none;
+      overscroll-behavior: none;
 }
 
 a {
@@ -333,7 +352,7 @@ a {
 .preloader {
   overflow: hidden;
   background: #9F1307;
-  z-index: 3;
+  z-index: 5;
 }
 
 .preloader__wrapper {
@@ -655,7 +674,7 @@ a {
       -ms-transform: translate(-50%, 0);
           transform: translate(-50%, 0);
   bottom: 6.4rem;
-  z-index: 2;
+  z-index: 4;
 }
 
 .scroll-indicator.horizontal svg {
@@ -677,7 +696,7 @@ a {
 .c-cursor {
   position: fixed;
   pointer-events: none;
-  z-index: 7;
+  z-index: 9;
 }
 
 .c-cursor * {
@@ -735,7 +754,7 @@ a {
   top: -50%;
   width: 200%;
   will-change: auto;
-  z-index: 5;
+  z-index: 7;
   opacity: .08;
 }
 
@@ -858,7 +877,7 @@ a {
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 6;
+  z-index: 8;
   color: #fff;
   height: 8rem;
   display: -webkit-box;
@@ -976,7 +995,7 @@ a {
   width: 100%;
   height: 100%;
   background: #000;
-  z-index: 4;
+  z-index: 6;
 }
 
 .page-menu__wrapper {
@@ -1080,8 +1099,8 @@ a {
 
 .hero-section {
   height: 100vh;
-  height: calc(var(--vh, 1vh) * 100);
   overflow: hidden;
+  z-index: 2;
 }
 
 .hero-section__wrapper {
@@ -1169,6 +1188,222 @@ a {
   max-width: 34.4rem;
 }
 
+.timeline-section {
+  color: #fff;
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.timeline-section__wrapper {
+  height: 100vh;
+  position: relative;
+}
+
+.timeline-section .scroll-container {
+  background: #9F1307;
+  height: 100vh;
+  position: relative;
+  width: auto;
+}
+
+.timeline-section .scroll-container__bg {
+  white-space: nowrap;
+  position: absolute;
+  top: 50%;
+  left: calc((100vw - 168.8rem) / 2);
+  padding-right: calc((100vw - 168.8rem) / 2);
+  -webkit-transform: translate(0, -50%);
+      -ms-transform: translate(0, -50%);
+          transform: translate(0, -50%);
+}
+
+.timeline-section .scroll-container__bg span {
+  font-size: 50rem;
+  line-height: 100%;
+  color: rgba(0, 0, 0, 0.07);
+}
+
+.timeline-section .scroll-container__bg span:not(:last-child) {
+  margin-right: 50rem;
+}
+
+.timeline-section .scroll-container__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  padding-left: calc((100vw - 168.8rem) / 2);
+}
+
+.timeline-section .scroll-container__item {
+  height: 100vh;
+}
+
+.timeline-section .scroll-container__item.remove-offset {
+  margin-right: 4rem;
+}
+
+.timeline-section .scroll-container__item:not(.remove-offset) {
+  margin-right: 13.6rem;
+}
+
+.timeline-section .scroll-container__item:last-child {
+  margin-right: 0;
+}
+
+.timeline-section .scroll-container .parallax-item__wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.timeline-section .scroll-container .parallax-item__wrapper.center {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.timeline-section .scroll-container .parallax-item__wrapper.bottom {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+}
+
+.timeline-section .scroll-container .parallax-item:not(.parallax-item_img-cover) {
+  padding-top: 11.2rem;
+  padding-bottom: 4rem;
+}
+
+.timeline-section .scroll-container .parallax-item_img-cover {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  width: 92rem;
+  height: 100vh;
+  position: relative;
+}
+
+.timeline-section .scroll-container .parallax-item_img-cover img {
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.timeline-section .scroll-container .parallax-item_img-cover:last-child {
+  width: 100vw;
+}
+
+.timeline-section .scroll-container .parallax-item_img-item {
+  position: relative;
+}
+
+.timeline-section .scroll-container .parallax-item__img {
+  width: 34.4rem;
+  height: 24.8rem;
+  position: relative;
+}
+
+.timeline-section .scroll-container .parallax-item__img_small {
+  width: 24.8rem;
+  height: 24.8rem;
+}
+
+.timeline-section .scroll-container .parallax-item__img img {
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.timeline-section .scroll-container .parallax-item__img-text {
+  position: absolute;
+  left: -2.4rem;
+  z-index: 2;
+}
+
+.timeline-section .scroll-container .parallax-item__img-text span {
+  position: relative;
+  display: block;
+  width: 2.2rem;
+  height: 6px;
+  margin-left: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+
+.timeline-section .scroll-container .parallax-item__img-text span:before,
+.timeline-section .scroll-container .parallax-item__img-text span:after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  position: absolute;
+  top: 0;
+  border-radius: 100%;
+}
+
+.timeline-section .scroll-container .parallax-item__img-text span:before {
+  left: 0;
+}
+
+.timeline-section .scroll-container .parallax-item__img-text span:after {
+  right: 0;
+}
+
+.timeline-section .scroll-container .parallax-item__img-text_top {
+  top: -1.7rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: column-reverse;
+          flex-direction: column-reverse;
+}
+
+.timeline-section .scroll-container .parallax-item__img-text_top span {
+  margin-top: 1.2rem;
+  margin-bottom: 0;
+}
+
+.timeline-section .scroll-container .parallax-item__img-text_bottom {
+  bottom: -1.7rem;
+}
+
+.timeline-section .scroll-container .parallax-item_text {
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  max-width: 53.6rem;
+}
+
+.timeline-section .scroll-container .parallax-item_text .parallax-item__wrapper {
+  padding-bottom: 5.2rem;
+}
+
+.timeline-section .scroll-container .parallax-item_text p:first-child {
+  text-indent: 6.8rem;
+}
+
+.timeline-section .scroll-container .parallax-item_text p:not(:last-child) {
+  margin-bottom: 2.4rem;
+}
+
+.preloader {
+  display: none;
+}
+
 @media (min-width: 769px) {
   .preloader__bg {
     width: 100%;
@@ -1191,6 +1426,11 @@ a {
 }
 
 @media (min-width: 1920px) {
+  .timeline-section .scroll-container .parallax-item__img-text {
+    font-size: 1.8rem;
+    line-height: 2.88rem;
+  }
+
   .preloader__button {
     font-size: 1.8rem;
     line-height: 2.48rem;
@@ -1208,7 +1448,8 @@ a {
   .timer__item:first-child .timer__item-date:after,
   .timer__item:nth-child(2) .timer__item-date:after,
   .timer__item-date,
-  .hero-section .hero-composition__title {
+  .hero-section .hero-composition__title,
+  .timeline-section .scroll-container__bg {
     font-size: 16.4rem;
     line-height: 16.4rem;
   }
@@ -1246,6 +1487,21 @@ a {
   .page-menu__card {
     height: 50.5rem;
   }
+
+  .timeline-section .scroll-container__bg span {
+    font-size: 80rem;
+  }
+}
+
+@media (max-width: 1780px) {
+  .timeline-section .scroll-container__bg {
+    left: 4.4rem;
+    padding-right: 4.4rem;
+  }
+
+  .timeline-section .scroll-container__content {
+    padding-left: 4.4rem;
+  }
 }
 
 @media (max-width: 1280px) {
@@ -1259,6 +1515,15 @@ a {
 
   .header {
     height: 7.2rem;
+  }
+
+  .timeline-section .scroll-container__bg {
+    left: calc((100vw - 111.2rem) / 2);
+    padding-right: calc((100vw - 111.2rem) / 2);
+  }
+
+  .timeline-section .scroll-container__content {
+    padding-left: calc((100vw - 111.2rem) / 2);
   }
 }
 
@@ -1367,6 +1632,15 @@ a {
   .hero-section .hero-composition__title {
     font-size: 8rem;
     line-height: 8rem;
+  }
+
+  .timeline-section .scroll-container__bg {
+    left: calc((100vw - 68rem) / 2);
+    padding-right: calc((100vw - 68rem) / 2);
+  }
+
+  .timeline-section .scroll-container__content {
+    padding-left: calc((100vw - 68rem) / 2);
   }
 }
 
@@ -1479,7 +1753,8 @@ a {
   .timer__item:first-child .timer__item-date:after,
   .timer__item:nth-child(2) .timer__item-date:after,
   .timer__item-date,
-  .hero-section .hero-composition__title {
+  .hero-section .hero-composition__title,
+  .timeline-section .scroll-container__bg {
     font-size: 9.2rem;
     line-height: 9.2rem;
   }
@@ -1586,6 +1861,15 @@ a {
     font-size: 5rem;
     line-height: 5rem;
     word-wrap: break-word;
+  }
+
+  .timeline-section .scroll-container__bg {
+    left: calc((100vw - 32px) / 2);
+    padding-right: calc((100vw - 32px) / 2);
+  }
+
+  .timeline-section .scroll-container__content {
+    padding-left: calc((100vw - 32px) / 2);
   }
 }
 

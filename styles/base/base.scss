@@ -15,13 +15,13 @@ html {
   @include media('<=phone') {
     font-size: calc(100vw / 375 * 10);
   }
-
 }
 
 body {
   font-family: $manrope-font;
   cursor: none;
   background: $color-redbg;
+  overscroll-behavior: none;
 }
 
 a {
