@@ -1,3 +1,15 @@
+%ramillas-14 {
+  font-family: $ramillas-font;
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 2.24rem;
+
+  @include media('>=desktop') {
+    font-size: 1.8rem;
+    line-height: 2.88rem;
+  }
+}
+
 %ramillas-16 {
   font-family: $ramillas-font;
   font-size: 1.6rem;
@@ -74,5 +86,25 @@
   @include media('<=phone') {
     font-size: 9.2rem;
     line-height: 9.2rem;
+  }
+}
+
+%ramillas-148 {
+  font-family: $ramillas-font;
+  font-size: 9.6rem;
+  font-weight: 400;
+  line-height: 12.4rem;
+
+  @include media('>=desktop') {
+    font-size: 14.8rem;
+    line-height: 19.2rem;
+  }
+  @include media('<=tablet') {
+    font-size: 8rem;
+    line-height: 10.4rem;
+  }
+  @include media('<=phone') {
+    font-size: 5rem;
+    line-height: 6.5rem;
   }
 }

@@ -3,6 +3,10 @@
     pointer-events: none;
     z-index: z('cursor');
 
+    @media(any-hover: none) {
+        display: none;
+    }
+
     & * {
         pointer-events: none;
     }

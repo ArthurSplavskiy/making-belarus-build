@@ -53,13 +53,48 @@ function svgInline(){
 }
 //svgInline();
 
+class Observer {
+    constructor (element, animationIn, animationOut) {
+        this.element = element
+        this.animationIn = animationIn
+        this.animationOut = animationOut
+
+        this.createObserver()
+    }
+
+    createObserver () {
+        this.options = {
+            //threshold: 0.9
+        }
+
+        this.observer = new window.IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.animationIn(entry.target)
+                } else {
+                    this.animationOut(entry.target)
+                }
+            })
+        }, this.options)
+
+        if(this.element instanceof NodeList) {
+            this.element.forEach(el => {
+                this.observer.observe(el)
+            })
+        } else {
+            this.observer.observe(this.element)
+        }
+        
+    }
+    
+}
 class Split {
     constructor () {
         this.splitText = this.splitText
     }
 
-    splitText (text, type = 'words,chars') {
-        return new SplitText(text, { type: type })
+    splitText (text, options = {}) {
+        return new SplitText(text, options)
     }
 }
 class Animation {
@@ -349,7 +384,7 @@ class Preloader {
         const closeTitle = closeSlide.querySelector('.preloader__title')
         const closeButton = closeSlide.querySelector('.preloader__button')
 
-        this.closeTitleLines = this.split.splitText(closeTitle, "lines,words")
+        this.closeTitleLines = this.split.splitText(closeTitle, { type: "lines,words" })
 
         gsap.set(this.element, { transformOrigin: '100% 100%' })
 
@@ -408,15 +443,11 @@ class HeroSection {
         ScrollTrigger.create({
             trigger: this.element,
             animation: this.timeline,
-
             start: "top top",
             end: '+=8000',
-
             pin: true,
-            scrub: 1,
+            scrub: 1
         });
-
-        
 
         this.timeline.fromTo(this.heroFirstDescriptions, {
             autoAlpha: 1
@@ -452,6 +483,7 @@ class HeroSection {
         }, '=-1.5')
 
         this.timeline.to(this.element, {
+            duration: 2,
             y: - (window.innerHeight)
         })
 
@@ -461,6 +493,18 @@ class HeroSection {
             filter: 'brightness(1)'
         }, '<')
 
+        this.pinSpacer = this.element.parentElement
+        let pinSpacerZindex = this.pinSpacer.style.zIndex
+
+        this.timeline.to('.pin-spacer', {
+            duration: 0,
+            zIndex: pinSpacerZindex
+        })
+
+        this.timeline.call(_ => {
+            this.pinSpacer.style.zIndex = -1;
+        })
+
     }
 }
 class TimelineSection {
@@ -468,37 +512,272 @@ class TimelineSection {
         this.element = document.querySelector('.timeline-section')
         this.elementWrapper = this.element.querySelector('.timeline-section__wrapper')
         this.elementScroll = this.element.querySelector('.scroll-container')
+        this.elementScrollBg = this.element.querySelector('.scroll-container__bg')
+        this.images = this.element.querySelectorAll('.parallax-item__img')
+        this.text = this.element.querySelectorAll('.parallax-item_text p')
+        
+        this.split = new Split()
 
         this.init()
     }
 
     init () {
         this.scroll()
+        this.Animation()
+        //this.textSplit()
     }
 
     scroll () {
-        this.scrollTimeline = gsap.timeline({ defaults: {ease: 'none'} })
 
-        ScrollTrigger.create({
-            trigger: this.elementWrapper,
-            animation: this.scrollTimeline,
+        ScrollTrigger.matchMedia({
 
-            start: "+=8000",
-            end: '20000px 100%',
+            "(max-width: 768px)": function() {
+                const timeline = gsap.timeline({ defaults: {ease: 'none'} })
+                const rootElement = document.querySelector('.timeline-section')
 
-            markers: true,
-            scrub: 1,
-        });
+                ScrollTrigger.create({
+                    trigger: rootElement,
+                    animation: timeline,
+                    start: "+=8000",
+                    end: '30000px 100%',
+                    pin: true, // add
+                    scrub: 1,
+                });
+
+                timeline.to(rootElement, {
+                    duration: 0.1,
+                    y: - (rootElement.scrollHeight + 100)
+                })
+            },
+
+            "(min-width: 769px)": function() {
+                const timeline = gsap.timeline({ defaults: {ease: 'none'} })
+                const rootElement = document.querySelector('.timeline-section')
+                const scrollWrapper = document.querySelector('.timeline-section__wrapper')
+                const scrollContainer = document.querySelector('.scroll-container')
+                const scrollContainerBG = document.querySelector('.scroll-container__bg')
+
+                const historySection = document.querySelector('.history-section')
+
+                ScrollTrigger.create({
+                    trigger: rootElement,
+                    animation: timeline,
+                    start: "+=8000",
+                    end: '30000px 100%',
+                    pin: true, // add
+                    scrub: 1
+                });
+                
+                timeline.fromTo(scrollContainer, {
+                    x: 0,
+                }, {
+                    x: - (scrollContainer.scrollWidth - window.innerWidth),
+                })
         
-        this.scrollTimeline.fromTo(this.elementScroll, {
-            x: 0,
-        }, {
-            x: - (this.elementScroll.scrollWidth - window.innerWidth),
+                timeline.fromTo(scrollContainerBG, {
+                    xPercent: 0,
+                    ease: Power3.easeIn,
+                }, {
+                    xPercent: 20,
+                }, '<')
+
+                timeline.to(rootElement, {
+                    duration: 0.1,
+                    yPercent: -100
+                })
+
+                timeline.fromTo(historySection, {
+                    duration: 0.05,
+                    filter: 'brightness(0)'
+                }, {
+                    duration: 0.05,
+                    filter: 'brightness(1)'
+                }, '<')
+
+            }
+
         })
+       
         
-        // this.scrollTimeline.call(_ => {
+        // tim.call(_ => {
         //     console.log('end')
         // })
+
+    }
+
+    Animation () {
+        this.observer = new Observer(this.images, this.imageAnimationIn, this.imageAnimationOut)
+        this.observerText = new Observer(this.text, this.textAnimationIn, this.textAnimationOut)
+    }
+
+    imageAnimationIn (el) {
+        if(!el.classList.contains('_reveal')) {
+            el.classList.add('_reveal')
+        }
+    }
+
+    imageAnimationOut (el) {
+        el.classList.remove('_reveal')
+    }
+
+    textSplit () {
+    
+        const animationLines = this.split.splitText(this.text, {
+            type: "lines",
+            linesClass: "split-child"
+        });
+        this.split.splitText(this.text, {
+            linesClass: "split-parent"
+        });
+
+        // stagger
+        this.text.forEach((textBox, index) => {
+            const list = textBox.querySelectorAll('.split-parent')
+
+            list.forEach((el, idx) => {
+                const listChilds = el.querySelectorAll('.split-child')
+
+                listChilds.forEach(line => {
+                    if(idx > 0) {
+                        let animationTime = idx
+
+                        if(animationTime < 10) {
+                            line.style.transitionDelay = `0.${animationTime}s`
+                        } else {
+                            line.style.transitionDelay = `${animationTime}s`
+                        }
+                        //console.log(animationTime)
+                    }
+                })
+
+            })
+        })
+
+    }
+
+    textAnimationIn (el) {
+        if(!el.classList.contains('is-view')) {
+            el.classList.add('is-view')
+        }
+    }
+
+    textAnimationOut (el) {
+        el.classList.remove('is-view')
+    }
+
+}
+class HistorySection {
+    constructor () {
+        this.element = document.querySelector('.history-section')
+
+        this.toLeftLine = this.element.querySelectorAll('.line-container:nth-child(odd) .line')
+        this.toRightLine = this.element.querySelectorAll('.line-container:nth-child(even) .line')
+
+        this.toStrokeStar = this.element.querySelectorAll('.line .stroke img')
+        this.toFillStar = this.element.querySelectorAll('.line .fill img')
+
+        this.moveBg = this.element.querySelector('.move-bg')
+
+        this.content = this.element.querySelector('.content')
+        this.textItems = this.content.querySelectorAll('.text-item')
+
+        this.init()
+    }
+
+    init () {
+
+        this.scroll()
+    }
+
+    scroll() {
+        this.timeline = gsap.timeline({ defaults: {ease: 'none' } })
+
+        ScrollTrigger.create({
+            trigger: this.element,
+            animation: this.timeline,
+
+            start: "+=29500", // 26100
+            end: '50000px 100%',
+            pin: true,
+
+            scrub: 1,
+            //onUpdate: self => console.log("progress:", self.progress)
+        });
+
+        gsap.set(this.toLeftLine, {
+            xPercent: 10
+        })
+
+        gsap.set(this.toRightLine, {
+            xPercent: -10
+        })
+
+        gsap.set(this.moveBg, {
+            scale: 0.5
+        })
+
+        gsap.set(this.content, {
+            yPercent: -200
+        })
+
+        gsap.set(this.textItems, {
+            display: 'none',
+            autoAlpha: 0,
+        })
+
+        this.timeline.to(this.toLeftLine, {
+            duration: 7,
+            xPercent: -100
+        })
+
+        this.timeline.to(this.toRightLine, {
+            duration: 8,
+            xPercent: 100
+        }, '<')
+
+        this.timeline.to(this.toFillStar, {
+            duration: 5,
+            rotate: '1000deg'
+        }, '<')
+
+        this.timeline.to(this.toStrokeStar, {
+            duration: 3,
+            rotate: '-1000deg'
+        }, '<')
+
+        this.timeline.to(this.moveBg, {
+            duration: 2,
+            yPercent: -100
+        }, '-=7')
+
+        this.timeline.to(this.moveBg, {
+            duration: 5,
+            scale: 1
+        }, '-=5')
+
+        this.timeline.fromTo(this.moveBg, {
+            filter: 'brightness(1)'
+        }, {
+            filter: 'brightness(0.5)'
+        })
+
+        gsap.utils.toArray(this.textItems).forEach(item => {
+            this.timeline.to(item, {
+                display: 'block',
+                duration: 1,
+                autoAlpha: 1
+            })
+            this.timeline.to(item, {
+                display: 'none',
+                duration: 1,
+                autoAlpha: 0
+            })
+        })
+
+        this.timeline.to(this.element, {
+            duration: 3,
+            yPercent: -100
+        })
 
     }
 }
@@ -518,6 +797,7 @@ class App {
         // SECTIONS
         this.heroSection = new HeroSection()
         this.timelineSection = new TimelineSection()
+        this.historySection = new HistorySection()
     }
 
     pageLoad () {
