@@ -562,7 +562,7 @@ class TimelineSection {
                 ScrollTrigger.create({
                     trigger: rootElement,
                     animation: timeline,
-                    start: "+=8000",
+                    start: self => self.previous().end,//"+=8000",
                     end: '30000px 100%',
                     pin: true, // add
                     scrub: 1
@@ -696,7 +696,7 @@ class HistorySection {
             trigger: this.element,
             animation: this.timeline,
 
-            start: "+=29500", // 26100
+            start: self => self.previous().end, //"+=29500", // 26100 
             end: '50000px 100%',
             pin: true,
 
@@ -779,6 +779,154 @@ class HistorySection {
             yPercent: -100
         })
 
+        /*
+            z-index
+        */
+        this.pinSpacer = this.element.parentElement
+        let pinSpacerZindex = this.pinSpacer.style.zIndex
+        this.timeline.to(this.pinSpacer, {
+            duration: 0,
+            zIndex: pinSpacerZindex
+        })
+        this.timeline.call(_ => {
+            this.pinSpacer.style.zIndex = -1;
+        })
+        //
+
+    }
+}
+class IncidentSection {
+    constructor () {
+        this.element = document.querySelector('.incident-section')
+        this.scrollContainer = this.element.querySelector('.scroll-container')
+        this.scrollContainerBG = this.element.querySelector('.incident-section__bg')
+
+        this.cards = this.element.querySelectorAll('.incident-item')
+        this.cardLine = this.element.querySelectorAll('.incident-item .line')
+        this.cardDescr = this.element.querySelectorAll('.incident-item__descr')
+        this.cardsHover = this.element.querySelectorAll('.incident-item__hover')
+
+        this.split = new Split()
+
+        this.init()
+    }
+
+    init () {
+        //console.log(this.scrollContainerBG)
+
+        this.scroll()
+        this.onScreen()
+        this.splitDescr()
+        //this.hoverInitial()
+        //this.addEventListeners()
+    }
+
+    scroll () {
+
+        this.timeline = gsap.timeline({ defaults: {ease: 'none' } })
+
+        ScrollTrigger.create({
+            trigger: this.element,
+            animation: this.timeline,
+            start: self => self.previous().end,
+            end: '55000px 100%',
+            pin: true, 
+            scrub: 1
+        });
+
+        if(this.scrollContainer.scrollWidth > window.innerWidth) {
+            this.timeline.fromTo(this.scrollContainer, {
+                x: 0,
+            }, {
+                x: - (this.scrollContainer.scrollWidth - window.innerWidth),
+            })
+        }
+
+        this.timeline.fromTo(this.scrollContainerBG, {
+            xPercent: 0,
+            ease: Power3.easeIn,
+        }, {
+            xPercent: -20,
+        }, '<')
+
+        this.timeline.to(this.element, {
+            yPercent: -100
+        })
+
+        /*
+            z-index
+        */
+        this.pinSpacer = this.element.parentElement
+        let pinSpacerZindex = this.pinSpacer.style.zIndex
+        this.timeline.to(this.pinSpacer, {
+            duration: 0,
+            zIndex: pinSpacerZindex
+        })
+        this.timeline.call(_ => {
+            this.pinSpacer.style.zIndex = -1;
+        })
+        //
+
+
+        // timeline.fromTo(historySection, {
+        //     duration: 0.05,
+        //     filter: 'brightness(0)'
+        // }, {
+        //     duration: 0.05,
+        //     filter: 'brightness(1)'
+        // }, '<')
+
+    }
+
+    splitDescr() {
+        this.splitDescription = this.split.splitText(this.cardDescr, { type: "lines" })
+    }
+
+    onScreen () {
+        this.observerLine = new Observer(this.cardLine, this.cardAnimationIn, this.cardAnimationOut)
+        this.observerDescr = new Observer(this.cardDescr, this.cardAnimationIn, this.cardAnimationOut)
+    }
+
+    cardAnimationIn (el) {
+        if(!el.classList.contains('is-view')) {
+            el.classList.add('is-view')
+        }
+    }
+
+    cardAnimationOut (el) {
+        el.classList.remove('is-view')
+    }
+
+}
+class BlogSection {
+    constructor () {
+        this.element = document.querySelector('.blog-section')
+
+        this.init()
+    }
+
+    init () {
+        console.log('init')
+
+        this.scroll()
+    }
+
+    scroll () {
+        this.timeline = gsap.timeline({ defaults: {ease: 'none'} })
+        const rootElement = document.querySelector('.timeline-section')
+
+        ScrollTrigger.create({
+            trigger: this.element,
+            animation: this.timeline,
+            start: self => self.previous().end,
+            end: '60000px 100%',
+            pin: true, // add
+            scrub: 1,
+        });
+
+        this.timeline.to(this.element, {
+            y: - (this.element.scrollHeight - window.innerHeight)
+        })
     }
 }
 
@@ -798,6 +946,8 @@ class App {
         this.heroSection = new HeroSection()
         this.timelineSection = new TimelineSection()
         this.historySection = new HistorySection()
+        this.incidentSection = new IncidentSection()
+        this.blogSection = new BlogSection()
     }
 
     pageLoad () {

@@ -11,7 +11,7 @@
 
     @include media('<=tablet') {
         -webkit-overflow-scrolling: touch;
-        overflow: auto;
+        //overflow: auto;
     }
 
     &__wrapper {
@@ -259,31 +259,6 @@
                 position: absolute;
                 left: -2.4rem;
                 z-index: 2;
-
-                span {
-                    position: relative;
-                    display: block;
-                    width: 22px;
-                    height: 6px;
-                    margin-left: 0.5rem;
-                    margin-bottom: 1.2rem;
-
-                    &:before, &:after {
-                        content: '';
-                        width: 6px;
-                        height: 6px;
-                        background: #fff;
-                        position: absolute;
-                        top: 0;
-                        border-radius: 100%;
-                    }
-                    &:before {
-                        left: 0;
-                    }
-                    &:after {
-                        right: 0;
-                    }
-                }
 
                 &_top {
                     top: -1.7rem;

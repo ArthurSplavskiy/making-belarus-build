@@ -7,11 +7,11 @@
     top: 0;
     left: 0;
     z-index: z('history-section');
-    background: #000;
-    top: 0!important;//add
+    background: $color-black;
+    box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.3);
+    top: 0!important; //add
 
     &__wrapper {
-
     }
 
     .lines {
@@ -74,12 +74,20 @@
             align-items: center;
             margin: 0 2rem;
 
+            @include media('<=tablet') {
+                margin: 0 0.8rem;
+            }
+
             span {
                 @extend %ramillas-148;
 
                 text-transform: uppercase;
                 letter-spacing: 0.2rem;
                 margin-right: 4rem;
+
+                @include media('<=tablet') {
+                    margin-right: 1.6rem;
+                }
             }
             img {
 
@@ -94,6 +102,9 @@
                 }
                 @include media('<=tablet') {
                     max-width: 58px;
+                }
+                @include media('<=bigPhone') {
+                    max-width: 40px;
                 }
                 @include media('<=phone') {
                     max-width: 36px;
@@ -126,7 +137,7 @@
             right: 0;
             object-fit: cover;
             width: 100%;
-            //height: 100%;
+            min-height: 100%; //comment
         }
     }
 
@@ -141,7 +152,11 @@
             left: 50%;
             transform: translate(-50%, -50%);
             width: 100%;
-            padding: 10rem 16px;
+            padding: 10rem 4.4rem;
+
+            @include media('<=phone') {
+                padding: 0 16px;
+            }
         }
 
         .text-item {
