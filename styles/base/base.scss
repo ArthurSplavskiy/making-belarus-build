@@ -29,3 +29,7 @@ a {
   outline: none;
   text-decoration: none;
 }
+
+.scroll-container {
+  will-change: transform;
+}

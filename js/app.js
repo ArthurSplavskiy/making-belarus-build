@@ -54,18 +54,16 @@ function svgInline(){
 //svgInline();
 
 class Observer {
-    constructor (element, animationIn, animationOut) {
+    constructor (element, animationIn, animationOut, options = {}) {
         this.element = element
         this.animationIn = animationIn
         this.animationOut = animationOut
+        this.options = options
 
         this.createObserver()
     }
 
     createObserver () {
-        this.options = {
-            //threshold: 0.9
-        }
 
         this.observer = new window.IntersectionObserver(entries => {
             entries.forEach(entry => {
@@ -101,29 +99,35 @@ class Animation {
     constructor () {
         this.animationTextIn = this.animationTextIn
         this.animationTextOut = this.animationTextOut
+        // this.fadeIn = this.fadeIn
+        // this.fadeOut = this.fadeOut
     }
 
     animationTextIn (text) {
 
         gsap.fromTo(text, {
-            y: '100%'
+            y: '100%',
+            opacity: 0
         }, {
             duration: 1,
             ease: Power1.easeOut,
             stagger: 0.09,
-            y: '0%'
+            y: '0%',
+            opacity: 1
         })
     }
 
     animationTextOut (text) {
 
         gsap.fromTo(text, {
-            y: '0%'
+            y: '0%',
+            opacity: 1
         }, {
             duration: 1,
             ease: Power1.easeOut,
             stagger: 0.09,
-            y: '100%'
+            y: '100%',
+            opacity: 0
         })
     }
 
@@ -193,11 +197,19 @@ class Header {
         this.element = document.querySelector('.header')
         this.pageMenu = document.querySelector('.page-menu')
 
+        this.cards = this.pageMenu.querySelectorAll('.page-menu__card')
+        this.cardsTitle = this.pageMenu.querySelectorAll('.page-menu__card-title')
+        this.slider = this.pageMenu.querySelector('.page-menu__slider')
+
+        this.split = new Split()
+
         // last
         this.init()
     }
 
     init () {
+
+        this.splitCardsTitle()
         this.menu()
         this.menuSlider()
     }
@@ -210,19 +222,17 @@ class Header {
         }
 
         if(this.burger.classList.contains('_active')) { // menu open
-            this.menuTimeline.to(this.pageMenu, {
-                y: '0'
-            })
 
+            this.menuTimeline.play()
+            
             this.menuTimeline.call(_ => {
                 this.element.classList.add('menu-open')
             })
+
+            this.addEventListeners()
         } else { // menu close
-            this.element.classList.remove('menu-open')
-            
-            this.menuTimeline.to(this.pageMenu, {
-                y: '-100%'
-            })
+
+            this.closeMenu()
         }
     }
 
@@ -230,7 +240,28 @@ class Header {
         this.burger = this.element.querySelector('.burger')
 
         this.menuTimeline = gsap.timeline()
+
+        this.menuTimeline.to(this.pageMenu, {
+            y: '0'
+        })
+        this.menuTimeline.to(this.slider, {
+            duration: 0.5,
+            autoAlpha: 1
+        })
+        this.menuTimeline.fromTo(this.titleLines.lines, {
+            y: '100%',
+            opacity: 0
+        }, {
+            duration: 1,
+            ease: Power1.easeOut,
+            stagger: 0.09,
+            y: '0%',
+            opacity: 1
+        }, '-=0.5')
+        this.menuTimeline.pause()
+
         gsap.set(this.pageMenu, { y: '-100%' })
+        gsap.set(this.slider, { autoAlpha: 0 })
 
         this.burger.onclick = event => this.menuOpen(event)
     }
@@ -275,6 +306,45 @@ class Header {
         })
         
     }
+
+    splitCardsTitle () {
+        this.titleLines = this.split.splitText(this.cardsTitle, {
+            type: "lines",
+            linesClass: "split-child"
+        })
+        this.split.splitText(this.cardsTitle, {
+            type: "lines",
+            linesClass: "split-parent"
+        })
+    }
+
+    anchorsTransition (e) {
+        //console.log(e.target)
+        //gsap.to(window, {duration: 2, scrollTo:"#someID"});
+        gsap.to(window, { duration: 2, scrollTo: {y: 60000} });
+
+        this.closeMenu()
+    }
+
+    addEventListeners () {
+        this.cards.forEach(card => {
+            card.addEventListener('click', this.anchorsTransition.bind(this))
+        })
+    }
+
+    removeEventListeners () {
+        this.cards.forEach(card => {
+            card.removeEventListener('click', this.anchorsTransition.bind(this))
+        })
+    }
+
+    closeMenu () {
+        this.burger.classList.remove('_active')
+        this.menuTimeline.reverse()
+        this.element.classList.remove('menu-open')
+        this.removeEventListeners()
+    }
+
 }
 class Preloader {
     constructor () {
@@ -291,9 +361,10 @@ class Preloader {
 
     init () {
         
+
+        this.close()
         this.slider()
         this.timer()
-        this.close()
     }
 
     slider () {
@@ -302,6 +373,17 @@ class Preloader {
         const delay = 4000
         const steps = slides.length
         let round = 0
+
+        this.lastSlideTimeline = gsap.timeline({ defaults: { stagger: 0.1} })
+        gsap.set(this.closeTitleLines.lines, {
+            y: '100%',
+            opacity: 0
+        })
+        this.lastSlideTimeline.to(this.closeTitleLines.lines, {
+            y: '10%',
+            opacity: 1
+        })
+        this.lastSlideTimeline.pause()
 
         const slideChange = () => {
             round++
@@ -325,11 +407,7 @@ class Preloader {
                 this.animation.animationTextIn(this.splitDateText.chars)
             }
             if(round === 2) {
-                gsap.fromTo(this.closeTitleLines.words, {
-                    y: '100%'
-                }, {
-                    y: '10%'
-                })
+                this.lastSlideTimeline.play()
             }
         }
 
@@ -388,27 +466,14 @@ class Preloader {
 
         gsap.set(this.element, { transformOrigin: '100% 100%' })
 
-        this.timelineClose = gsap.timeline(this.element)
+        this.timelineClose = gsap.timeline()
 
         const clickHandler = () => {
-            const opacityItems = [this.elementBg, this.sliderEl]
-            gsap.fromTo(opacityItems, {
-                autoAlpha: '1'
-            }, {
-                autoAlpha: '0'
-            })
-
-            gsap.fromTo(this.closeTitleLines.words, {
-                y: '0%'
-            }, {
-                duration: 1,
-                ease: Power1.easeOut,
-                y: '100%'
-            })
+            this.lastSlideTimeline.reverse()
 
             this.timelineClose.to(this.element, {
-                scaleY: '0'
-            }, '+=0.7')
+                yPercent: -100
+            }, '+=1')
 
             this.timelineClose.call(_ => {
                 this.element.remove()
@@ -865,9 +930,8 @@ class IncidentSection {
         this.timeline.call(_ => {
             this.pinSpacer.style.zIndex = -1;
         })
+        
         //
-
-
         // timeline.fromTo(historySection, {
         //     duration: 0.05,
         //     filter: 'brightness(0)'
@@ -901,33 +965,145 @@ class IncidentSection {
 class BlogSection {
     constructor () {
         this.element = document.querySelector('.blog-section')
+        this.elementWrapper = document.querySelector('.blog-section__wrapper')
+        this.scrollContainerBG = this.element.querySelector('.blog-section__bg')
+
+        this.images = this.element.querySelectorAll('.blog-item img')
+        this.descriptions = [...this.element.querySelectorAll('.media-column p'), ...this.element.querySelectorAll('.blog-item_bg .content p')]
+        this.dots = this.element.querySelectorAll('.dots')
+
+        this.footer = document.querySelector('.footer')
+        this.footerLinks = this.footer.querySelectorAll('.social-link')
+
+        this.split = new Split()
+        this.animation = new Animation()
 
         this.init()
     }
 
     init () {
-        console.log('init')
 
         this.scroll()
+        this.onScreen()
+        this.descrAnimation()
+        this.footerLinksSplit()
     }
 
     scroll () {
         this.timeline = gsap.timeline({ defaults: {ease: 'none'} })
-        const rootElement = document.querySelector('.timeline-section')
 
         ScrollTrigger.create({
             trigger: this.element,
             animation: this.timeline,
             start: self => self.previous().end,
-            end: '60000px 100%',
+            end: () => 60000 + this.elementWrapper.offsetHeight + " 100%", //'60000px 100%'
             pin: true, // add
             scrub: 1,
+
+            onEnterBack: () => {
+                this.footerClassToggle()
+                this.elementClassToggle()
+            },
+            onLeave: () => {
+                this.footerClassToggle()
+                this.elementClassToggle()
+            },
         });
 
-        this.timeline.to(this.element, {
-            y: - (this.element.scrollHeight - window.innerHeight)
+        this.scrollerSecion = this.timeline.to(this.element, {
+            y: - (this.element.scrollHeight) // - window.innerHeight
+        })
+
+        this.timeline.fromTo(this.scrollContainerBG, {
+            yPercent: 0,
+            ease: Power3.easeIn,
+        }, {
+            yPercent: 10,
+        }, '<')
+
+        /* 
+          * z-index
+        */
+        this.pinSpacer = this.element.parentElement
+        let pinSpacerZindex = this.pinSpacer.style.zIndex
+        this.timeline.to(this.pinSpacer, {
+            duration: 0,
+            zIndex: pinSpacerZindex
+        })
+        this.timeline.call(_ => {
+            this.pinSpacer.style.zIndex = -1;
+        })
+
+    }
+
+    onScreen () {
+        this.observerImages = new Observer(this.images, this.imgAnimationIn, this.imgAnimationOut, { threshold: 0.5 })
+        this.observerDots = new Observer(this.dots, this.imgAnimationIn, this.imgAnimationOut, { threshold: 0.5 })
+    }
+
+    imgAnimationIn (el) {
+        if(!el.classList.contains('is-view')) {
+            el.classList.add('is-view')
+        }
+    }
+
+    imgAnimationOut (el) {
+        el.classList.remove('is-view')
+    }
+
+    descrAnimation() {
+
+        this.split.splitText(this.descriptions, {
+            type: "lines, chars",
+            linesClass: "split-child"
+        })
+        this.split.splitText(this.descriptions, {
+            linesClass: "split-parent"
+        })
+
+        this.observer = new window.IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.animation.animationTextIn(entry.target.querySelectorAll('.split-child'))
+                } else {
+                    this.animation.animationTextOut(entry.target.querySelectorAll('.split-child'))
+                }
+            })
+        }, { threshold: 1 })
+
+        this.descriptions.forEach(el => {
+            this.observer.observe(el)
+        })
+
+    }
+
+    footerLinksSplit() {
+        this.split.splitText(this.footerLinks, {
+            type: "lines",
+            linesClass: "split-child"
+        })
+        this.split.splitText(this.footerLinks, {
+            type: "lines",
+            linesClass: "split-parent"
         })
     }
+
+    footerClassToggle () {
+        if(!this.footer.classList.contains('is-view')) {
+            this.footer.classList.add('is-view')
+        } else {
+            this.footer.classList.remove('is-view')
+        }
+    }
+
+    elementClassToggle () {
+        if(!this.element.classList.contains('leave')) {
+            this.element.classList.add('leave')
+        } else {
+            this.element.classList.remove('leave')
+        }
+    }
+    
 }
 
 class App {
@@ -937,12 +1113,17 @@ class App {
     }
 
     init () {
+        /*
+          * Components
+        */
         this.header = new Header()
         this.preloader = new Preloader()
         this.animation = new Animation()
         this.cursor = new Cursor()
 
-        // SECTIONS
+        /*
+          * Sections
+        */
         this.heroSection = new HeroSection()
         this.timelineSection = new TimelineSection()
         this.historySection = new HistorySection()
@@ -951,8 +1132,10 @@ class App {
     }
 
     pageLoad () {
-        
-        // preloader cover
+
+        /*
+          * Preloader cover
+        */
         const preloaderCoverTimeline = gsap.timeline()
         preloaderCoverTimeline.fromTo(this.preloader.preloaderCover, { autoAlpha: 1 }, { autoAlpha: 0 })
         preloaderCoverTimeline.call(_ => this.preloader.preloaderCover.remove())
