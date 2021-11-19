@@ -222,7 +222,7 @@ class Header {
         }
 
         if(this.burger.classList.contains('_active')) { // menu open
-
+            
             this.menuTimeline.play()
             
             this.menuTimeline.call(_ => {
@@ -489,6 +489,8 @@ class HeroSection {
         this.element = document.querySelector('.hero-section')
         this.heroComposition = this.element.querySelector('.hero-composition')
 
+        this.pinSpacer = this.element.parentElement
+
         this.timelineSection = document.querySelector('.timeline-section')
 
         this.heroFirstLines = this.heroComposition.querySelectorAll('.hero-composition__title')
@@ -500,6 +502,7 @@ class HeroSection {
 
     init () {
         this.timelineAnimation()
+        this.normalize()
     }
 
     timelineAnimation() {
@@ -509,8 +512,9 @@ class HeroSection {
             trigger: this.element,
             animation: this.timeline,
             start: "top top",
-            end: '+=8000',
+            end: () => this.element.offsetHeight * 10, // '+=8000' 
             pin: true,
+            pinSpacing: "margin",
             scrub: 1
         });
 
@@ -571,6 +575,12 @@ class HeroSection {
         })
 
     }
+
+    normalize () {
+        //console.log(this.element.offsetHeight * 10 + 'px!important')
+        this.pinSpacer.style.height = this.element.offsetHeight * 10 + 'px!important'
+    }
+
 }
 class TimelineSection {
     constructor () {
@@ -603,7 +613,7 @@ class TimelineSection {
                 ScrollTrigger.create({
                     trigger: rootElement,
                     animation: timeline,
-                    start: "+=8000",
+                    start: self => self.previous().end, // "+=8000"
                     end: '30000px 100%',
                     pin: true, // add
                     scrub: 1,
@@ -624,12 +634,15 @@ class TimelineSection {
 
                 const historySection = document.querySelector('.history-section')
 
+                //console.log(30000 - rootElement.offsetHeight + "px 100%")
+
                 ScrollTrigger.create({
                     trigger: rootElement,
                     animation: timeline,
                     start: self => self.previous().end,//"+=8000",
                     end: '30000px 100%',
                     pin: true, // add
+                    pinSpacing: "margin",
                     scrub: 1
                 });
                 
@@ -757,6 +770,8 @@ class HistorySection {
     scroll() {
         this.timeline = gsap.timeline({ defaults: {ease: 'none' } })
 
+        //console.log(50000 - this.element.offsetHeight + "px 100%")
+
         ScrollTrigger.create({
             trigger: this.element,
             animation: this.timeline,
@@ -764,6 +779,7 @@ class HistorySection {
             start: self => self.previous().end, //"+=29500", // 26100 
             end: '50000px 100%',
             pin: true,
+            pinSpacing: "margin",
 
             scrub: 1,
             //onUpdate: self => console.log("progress:", self.progress)
@@ -871,6 +887,8 @@ class IncidentSection {
         this.cardDescr = this.element.querySelectorAll('.incident-item__descr')
         this.cardsHover = this.element.querySelectorAll('.incident-item__hover')
 
+        this.scrollIndicator = document.querySelector('.scroll-indicator')
+
         this.split = new Split()
 
         this.init()
@@ -896,6 +914,7 @@ class IncidentSection {
             start: self => self.previous().end,
             end: '55000px 100%',
             pin: true, 
+            pinSpacing: "margin",
             scrub: 1
         });
 
@@ -917,6 +936,10 @@ class IncidentSection {
         this.timeline.to(this.element, {
             yPercent: -100
         })
+
+        this.timeline.to(this.scrollIndicator, {
+            autoAlpha: 0
+        }, '<')
 
         /*
             z-index
@@ -972,6 +995,8 @@ class BlogSection {
         this.descriptions = [...this.element.querySelectorAll('.media-column p'), ...this.element.querySelectorAll('.blog-item_bg .content p')]
         this.dots = this.element.querySelectorAll('.dots')
 
+        this.header = document.querySelector('.header')
+
         this.footer = document.querySelector('.footer')
         this.footerLinks = this.footer.querySelectorAll('.social-link')
 
@@ -996,18 +1021,31 @@ class BlogSection {
             trigger: this.element,
             animation: this.timeline,
             start: self => self.previous().end,
-            end: () => 60000 + this.elementWrapper.offsetHeight + " 100%", //'60000px 100%'
+            end: () => 60000 + this.element.scrollHeight + "px 100%", //'60000px 100%'
             pin: true, // add
+            pinSpacing: "margin",
             scrub: 1,
 
+            onEnter: () => {
+
+                this.headerClassToggle()
+            },
             onEnterBack: () => {
                 this.footerClassToggle()
                 this.elementClassToggle()
+
+                this.headerClassToggle()
             },
             onLeave: () => {
                 this.footerClassToggle()
                 this.elementClassToggle()
+
+                this.headerClassToggle()
             },
+            onLeaveBack: () => {
+
+                this.headerClassToggle()
+            }
         });
 
         this.scrollerSecion = this.timeline.to(this.element, {
@@ -1054,7 +1092,7 @@ class BlogSection {
     descrAnimation() {
 
         this.split.splitText(this.descriptions, {
-            type: "lines, chars",
+            type: "lines,words,chars",
             linesClass: "split-child"
         })
         this.split.splitText(this.descriptions, {
@@ -1086,6 +1124,14 @@ class BlogSection {
             type: "lines",
             linesClass: "split-parent"
         })
+    }
+
+    headerClassToggle () {
+        if(!this.header.classList.contains('dark-theme')) {
+            this.header.classList.add('dark-theme')
+        } else {
+            this.header.classList.remove('dark-theme')
+        }
     }
 
     footerClassToggle () {
@@ -1148,6 +1194,7 @@ class App {
     }
 
     onResize () {
+        ScrollTrigger.refresh()
     }
 
     addEventListeners () {

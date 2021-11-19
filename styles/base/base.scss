@@ -33,3 +33,11 @@ a {
 .scroll-container {
   will-change: transform;
 }
+
+.split-parent {
+  overflow: hidden;
+}
+
+.pin-spacer:not(:last-child) {
+  height: 1px!important;
+}
