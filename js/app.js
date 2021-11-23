@@ -1,57 +1,67 @@
+let unlock = true;
 
-/*
- * Replace all SVG images with inline SVG
- */
-function svgInline(){
-    const svgImages = document.querySelectorAll('img[src*="svg"]')
-
-    for(let i = 0; i < svgImages.length; i++) {
-      const img = svgImages[i]
-      const imgClass = img.getAttribute('class')
-      const imgID = img.getAttribute('id')
-      const imgURL = img.getAttribute('src')
-
-      fetch(imgURL)
-        .then((response) => {
-          return response;
-        })
-        .then((data) => {
-          console.log(data.body.getReader());
-      });
-    }
-    
-
-
-    // $('img[src*="svg"]').not('.preloader__img').each(function () {
-    //   let $img = $(this),
-    //     imgID = $img.attr('id'),
-    //     imgClass = $img.attr('class'),
-    //     imgURL = $img.attr('src');
-  
-    //   $.get(imgURL, function (data) {
-    //     // Get the SVG tag, ignore the rest
-    //     let $svg = $(data).find('svg');
-    //         if ($svg) {
-    //             $svg.find('path').removeAttr('style');
-    //             // Remove any invalid XML tags as per http://validator.w3.org
-    //             $svg.removeAttr('id x y version xmlns xml:space xmlns:a');
-    //             $svg.find("style").detach();
-    //             // Add replaced image ID to the new SVG
-    //             if (imgID !== undefined) $svg.attr('id', imgID);
-    //             // Add replaced image classes to the new SVG
-    //             if (imgClass !== undefined) $svg.attr('class', 'replaced__svg ' + imgClass);
-    //             else $svg.attr('class', 'replaced__svg');
-    //             // Check if the viewport is set, if the viewport is not set the SVG wont't scale.
-    //             /*if (!$svg.attr('viewBox') && $svg.attr('height') && $svg.attr('width')) {
-    //             $svg.attr('viewBox', '0 0 ' + $svg.attr('height') + ' ' + $svg.attr('width'));
-    //             }*/
-    //             // Replace image with new SVG
-    //             $img.replaceWith($svg);
-    //         }
-    //     }, 'xml');
-    // });
+function body_lock(delay) {
+	let body = document.querySelector("body");
+	if (body.classList.contains('_lock')) {
+		body_lock_remove(delay);
+	} else {
+		body_lock_add(delay);
+	}
 }
-//svgInline();
+function body_lock_remove(delay, mod = '') {
+	let body = document.querySelector("body");
+	if (unlock) {
+		let lock_padding = document.querySelectorAll("._lp");
+		setTimeout(() => {
+			for (let index = 0; index < lock_padding.length; index++) {
+				const el = lock_padding[index];
+				el.style.paddingRight = '0px';
+			}
+			body.style.paddingRight = '0px';
+			
+			if (mod) {
+				body.classList.remove(`${mod}-lock`);
+				if (body.classList.contains('_lock')) {
+					body.classList.remove("_lock");
+				}
+			} else {
+				body.classList.remove("_lock");
+			}
+
+		}, delay);
+
+		unlock = false;
+		setTimeout(function () {
+			unlock = true;
+		}, delay);
+	}
+}
+function body_lock_add(delay, mod = '') {
+	let body = document.querySelector("body");
+	if (unlock) {
+		let lock_padding = document.querySelectorAll("._lp");
+		for (let index = 0; index < lock_padding.length; index++) {
+			const el = lock_padding[index];
+			el.style.paddingRight = window.innerWidth - document.querySelector('.wrapper').offsetWidth + 'px';
+		}
+		body.style.paddingRight = window.innerWidth - document.querySelector('.wrapper').offsetWidth + 'px';
+
+		if (mod) {
+			body.classList.add(`${mod}-lock`);
+		} else {
+			body.classList.add("_lock");
+		}
+
+		unlock = false;
+		setTimeout(function () {
+			unlock = true;
+		}, delay);
+	}
+}
+
+body_lock(0)
+gsap.to(window, { scrollTo: {y: 0} })
+
 
 class Observer {
     constructor (element, animationIn, animationOut, options = {}) {
@@ -148,13 +158,40 @@ class Animation {
     }
 
 }
+class AsyncLoad {
+    constructor (element) {
+        this.element = element
+
+        this.createObserver()
+    }
+
+    createObserver () {
+        this.observer = new window.IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (!this.element.src) {
+                        this.element.src = this.element.getAttribute('data-src')
+                        this.element.onload = _ => {
+                            this.element.classList.add('loaded')
+                        }
+                    }
+                }
+            })
+        })
+
+        this.observer.observe(this.element)
+    }
+}
 
 class Cursor {
     constructor() {
         this.element = document.querySelector('.c-cursor')
+        this.pageElement = document.querySelector('.page-cursor')
         this.cursorSlider = this.element.querySelector('.c-cursor__slider')
 
         this.cursorContainer = document.querySelector('.page-menu .swiper-wrapper')
+
+        this.activeCursorLinks = document.querySelectorAll('._cursor-pointer')
 
         this.init()
     }
@@ -181,15 +218,33 @@ class Cursor {
     setCursorSwiper () {
         this.element.classList.add('above-slider')
     }
-
     removeCursorSwiper () {
         this.element.classList.remove('above-slider')
     }
 
+    setCursorPointer () {
+        this.cursorTimeline.play()
+    }
+    removeCursorPointer () {
+        this.cursorTimeline.reverse()
+    }
+
     init () {
+        this.cursorTimeline = gsap.timeline()
+        this.cursorTimeline.to(this.pageElement, {
+            scale: 1.4,
+            rotate: '225deg'
+        })
+        this.cursorTimeline.pause()
+
         document.addEventListener('mousemove', this.initCursor.bind(this));
         this.cursorContainer.addEventListener('mouseenter', this.setCursorSwiper.bind(this));
         this.cursorContainer.addEventListener('mouseleave', this.removeCursorSwiper.bind(this));
+
+        this.activeCursorLinks.forEach(link => {
+            link.addEventListener('mouseenter', this.setCursorPointer.bind(this));
+            link.addEventListener('mouseleave', this.removeCursorPointer.bind(this));
+        })
     }
 }
 class Header {
@@ -222,6 +277,7 @@ class Header {
         }
 
         if(this.burger.classList.contains('_active')) { // menu open
+            body_lock_add(0, 'menu')
             
             this.menuTimeline.play()
             
@@ -231,6 +287,7 @@ class Header {
 
             this.addEventListeners()
         } else { // menu close
+            body_lock_remove(0, 'menu')
 
             this.closeMenu()
         }
@@ -319,9 +376,30 @@ class Header {
     }
 
     anchorsTransition (e) {
-        //console.log(e.target)
-        //gsap.to(window, {duration: 2, scrollTo:"#someID"});
-        gsap.to(window, { duration: 2, scrollTo: {y: 60000} });
+        const timelineSection = 8000
+        const historySection = 30000
+        const incidentSection = 50000
+        const blogSection = 55000
+
+        if(e.target.classList.contains('page-menu__card') || e.target.closest('.page-menu__card')) {
+            const el = e.target.closest('.page-menu__card').dataset
+            console.log(el.link)
+
+            switch(el.link) {
+                case 's-timeline': 
+                    gsap.to(window, { duration: 2, scrollTo: {y: timelineSection} })
+                    break;
+                case 's-history': 
+                    gsap.to(window, { duration: 2, scrollTo: {y: historySection} })
+                    break;
+                case 's-incident': 
+                    gsap.to(window, { duration: 2, scrollTo: {y: incidentSection} })
+                    break;
+                case 's-blog': 
+                    gsap.to(window, { duration: 2, scrollTo: {y: blogSection} })
+                    break;
+            }
+        }
 
         this.closeMenu()
     }
@@ -343,6 +421,7 @@ class Header {
         this.menuTimeline.reverse()
         this.element.classList.remove('menu-open')
         this.removeEventListeners()
+        body_lock_remove(0, 'menu')
     }
 
 }
@@ -352,16 +431,15 @@ class Preloader {
         this.elementBg = this.element.querySelector('.preloader__bg')
         this.preloaderCover = document.querySelector('.preloader-cover')
 
+        this.heroTitles = document.querySelectorAll('.hero-composition__title')
+
         this.split = new Split()
         this.animation = new Animation()
-
-        // last
-        this.init()
     }
 
     init () {
         
-
+        this.heroTitlesAnimation()
         this.close()
         this.slider()
         this.timer()
@@ -370,7 +448,7 @@ class Preloader {
     slider () {
         this.sliderEl = this.element.querySelector('.preloader__slider')
         const slides = this.sliderEl.querySelectorAll('.preloader__slide')
-        const delay = 4000
+        const delay = 6000
         const steps = slides.length
         let round = 0
 
@@ -384,6 +462,8 @@ class Preloader {
             opacity: 1
         })
         this.lastSlideTimeline.pause()
+
+        slides[0].classList.add('_active')
 
         const slideChange = () => {
             round++
@@ -402,7 +482,7 @@ class Preloader {
             if(round === steps) {
                 clearInterval(interval)
             }
-
+            
             if(round === 1) {
                 this.animation.animationTextIn(this.splitDateText.chars)
             }
@@ -477,10 +557,35 @@ class Preloader {
 
             this.timelineClose.call(_ => {
                 this.element.remove()
+
+                body_lock_remove(0)
+
+                gsap.to(this.heroTitlesLine.lines, {
+                    duration: 1,
+                    ease: Power1.easeOut,
+                    stagger: 0.09,
+                    y: '0%',
+                    opacity: 1
+                })
             })
         }
 
         closeButton.onclick = clickHandler
+    }
+
+    heroTitlesAnimation () {
+        this.heroTitlesLine = this.split.splitText(this.heroTitles, {
+            type: "lines,words,chars",
+            linesClass: "split-child"
+        })
+        this.split.splitText(this.heroTitles, {
+            linesClass: "split-parent"
+        })
+
+        gsap.set(this.heroTitlesLine.lines, {
+            y: '100%',
+            opacity: 0
+        })
     }
 }
 
@@ -502,7 +607,7 @@ class HeroSection {
 
     init () {
         this.timelineAnimation()
-        this.normalize()
+        //this.normalize()
     }
 
     timelineAnimation() {
@@ -512,7 +617,7 @@ class HeroSection {
             trigger: this.element,
             animation: this.timeline,
             start: "top top",
-            end: () => this.element.offsetHeight * 10, // '+=8000' 
+            end: () => '+=8000', // '+=8000' 
             pin: true,
             pinSpacing: "margin",
             scrub: 1
@@ -577,7 +682,6 @@ class HeroSection {
     }
 
     normalize () {
-        //console.log(this.element.offsetHeight * 10 + 'px!important')
         this.pinSpacer.style.height = this.element.offsetHeight * 10 + 'px!important'
     }
 
@@ -631,6 +735,7 @@ class TimelineSection {
                 const scrollWrapper = document.querySelector('.timeline-section__wrapper')
                 const scrollContainer = document.querySelector('.scroll-container')
                 const scrollContainerBG = document.querySelector('.scroll-container__bg')
+                const scrollIndicatorArrow = document.querySelectorAll('.scroll-indicator path, .scroll-indicator rect')
 
                 const historySection = document.querySelector('.history-section')
 
@@ -645,6 +750,11 @@ class TimelineSection {
                     pinSpacing: "margin",
                     scrub: 1
                 });
+                
+                timeline.to(scrollIndicatorArrow, {
+                    duration: 0,
+                    fill: '#ffffff'
+                })
                 
                 timeline.fromTo(scrollContainer, {
                     x: 0,
@@ -675,11 +785,6 @@ class TimelineSection {
             }
 
         })
-       
-        
-        // tim.call(_ => {
-        //     console.log('end')
-        // })
 
     }
 
@@ -794,7 +899,8 @@ class HistorySection {
         })
 
         gsap.set(this.moveBg, {
-            scale: 0.5
+            scale: 0.5,
+            z: '1px'
         })
 
         gsap.set(this.content, {
@@ -818,12 +924,12 @@ class HistorySection {
 
         this.timeline.to(this.toFillStar, {
             duration: 5,
-            rotate: '1000deg'
+            rotate: '100deg'
         }, '<')
 
         this.timeline.to(this.toStrokeStar, {
             duration: 3,
-            rotate: '-1000deg'
+            rotate: '-100deg'
         }, '<')
 
         this.timeline.to(this.moveBg, {
@@ -1021,9 +1127,8 @@ class BlogSection {
             trigger: this.element,
             animation: this.timeline,
             start: self => self.previous().end,
-            end: () => 60000 + this.element.scrollHeight + "px 100%", //'60000px 100%'
+            end: () => 55000 + this.element.scrollHeight + "px 100%", //'60000px 100%'
             pin: true, // add
-            pinSpacing: "margin",
             scrub: 1,
 
             onEnter: () => {
@@ -1163,7 +1268,6 @@ class App {
           * Components
         */
         this.header = new Header()
-        this.preloader = new Preloader()
         this.animation = new Animation()
         this.cursor = new Cursor()
 
@@ -1174,7 +1278,11 @@ class App {
         this.timelineSection = new TimelineSection()
         this.historySection = new HistorySection()
         this.incidentSection = new IncidentSection()
-        this.blogSection = new BlogSection()
+
+        /*
+          * Functions
+        */
+       this.asyncLoad()
     }
 
     pageLoad () {
@@ -1182,9 +1290,13 @@ class App {
         /*
           * Preloader cover
         */
-        const preloaderCoverTimeline = gsap.timeline()
+        this.preloader = new Preloader()
+        const preloaderCoverTimeline = gsap.timeline({ defaults: {delay: 1} })
         preloaderCoverTimeline.fromTo(this.preloader.preloaderCover, { autoAlpha: 1 }, { autoAlpha: 0 })
         preloaderCoverTimeline.call(_ => this.preloader.preloaderCover.remove())
+
+        this.blogSection = new BlogSection()
+        this.preloader.init()
     }
 
     contentDomLoad () {
@@ -1194,7 +1306,6 @@ class App {
     }
 
     onResize () {
-        ScrollTrigger.refresh()
     }
 
     addEventListeners () {
@@ -1206,6 +1317,14 @@ class App {
     removeEventListeners () {
         window.removeEventListener('load', this.pageLoad.bind(this))
         document.removeEventListener('DOMContentLoaded', this.contentDomLoad.bind(this))
+    }
+
+    asyncLoad () {
+        const images = document.querySelectorAll('[data-src]')
+
+        this.preloadImages = Array.from(images).map(image => {
+            return new AsyncLoad(image)
+        })
     }
 }
 

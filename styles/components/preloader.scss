@@ -81,10 +81,10 @@
 
     &._active {
       opacity: 1;
-      transition: opacity 3s $easy-out-expo;
+      transition: opacity 2s $easy-out-expo;
 
       &:not(:last-child) {
-        animation: animationEnd 3s $easy-out-expo forwards 2.5s;
+        animation: animationEnd 2s $easy-out-expo forwards 5s;
         @keyframes animationEnd {
           to {
             opacity: 0;
@@ -93,9 +93,49 @@
       }
     }
 
-    // &:nth-child(1) {
-    //   opacity: 0;
-    // }
+    &:nth-child(1) {
+      &._active {
+        .circle-calendar {
+          .first-circle {
+            transform-origin: 50% 50%;
+            animation-name: leftRotate;
+            animation-duration: 4.5s;
+            animation-timing-function: cubic-bezier(.68,1,.59,.99);
+            animation-fill-mode: forwards;
+          }
+          .second-circle {
+            transform-origin: 50% 50%;
+            animation-name: rightRotate;
+            animation-duration: 4.5s;
+            animation-timing-function: cubic-bezier(.68,1,.59,.99);
+            animation-fill-mode: forwards;
+          }
+          .third-circle {
+            transform-origin: 50% 50%;
+            animation-name: leftRotate;
+            animation-duration: 4.5s;
+            animation-timing-function: cubic-bezier(.68,1,.59,.99);
+            animation-fill-mode: forwards;
+          }
+          @keyframes leftRotate {
+            from {
+                transform: rotate(30deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+          }
+          @keyframes rightRotate {
+            from {
+                transform: rotate(-30deg);
+            }
+            to {
+                transform: rotate(-360deg);
+            }
+          }
+        }
+      }
+    }
     // &:nth-child(2) {
     //   opacity: 1;
     // }
@@ -192,7 +232,6 @@
     text-transform: uppercase;
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 6.1rem;
-    cursor: pointer;
     position: relative;
     overflow: hidden;
 
@@ -330,46 +369,6 @@
           display: none;
         }
       }
-    }
-  }
-}
-
-.circle-calendar {
-  .first-circle {
-    transform-origin: 50% 50%;
-    animation-name: leftRotate;
-    animation-duration: 2s;
-    animation-timing-function: cubic-bezier(1,.01,.51,.75);
-    animation-fill-mode: forwards;
-  }
-  .second-circle {
-    transform-origin: 50% 50%;
-    animation-name: rightRotate;
-    animation-duration: 2s;
-    animation-timing-function: cubic-bezier(1,.01,.51,.75);
-    animation-fill-mode: forwards;
-  }
-  .third-circle {
-    transform-origin: 50% 50%;
-    animation-name: leftRotate;
-    animation-duration: 2s;
-    animation-timing-function: cubic-bezier(1,.01,.51,.75);
-    animation-fill-mode: forwards;
-  }
-  @keyframes leftRotate {
-    from {
-        transform: rotate(30deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-  }
-  @keyframes rightRotate {
-    from {
-        transform: rotate(-30deg);
-    }
-    to {
-        transform: rotate(-360deg);
     }
   }
 }

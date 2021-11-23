@@ -10,6 +10,41 @@
     align-items: center;
 
     &.menu-open {
+        .logo {
+            color: $color-white!important;
+        }
+        .lang-toggle {
+            border-color: $color-white!important;
+
+            &__item {
+                color: $color-white!important;
+            }
+        }
+        .burger {
+            div {
+                background: $color-white!important;
+            }
+        }
+    }
+    &.dark-theme {
+        .logo {
+            color: $color-black;
+        }
+        .lang-toggle {
+            border-color: $color-black;
+
+            &__item {
+                color: $color-black;
+            }
+        }
+        .burger {
+            div {
+                background: $color-black;
+            }
+        }
+    }
+
+    &.menu-open {
         @include media('<=bigPhone') {
             background: $color-black;
         }
@@ -74,20 +109,20 @@
 .logo {
     @extend %ramillas-20;
 
-    color: #fff;
+    transition: color 1s $easy-out-expo;
+    color: $color-white;
     text-transform: uppercase;
     white-space: nowrap;
     letter-spacing: 0.02rem;
 }
 
 .burger {
-    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     position: relative;
-
+    
     &._active {
         div:first-child {
             opacity: 0;
@@ -114,7 +149,7 @@
     }
 
     div {
-        transition: opacity 0.8s $easy-out-expo;
+        transition: opacity 0.8s $easy-out-expo, background 1s $easy-out-expo;
         width: 5.6rem;
         background: $color-white;
 
@@ -168,7 +203,7 @@
     &__item {
         @extend %manrope-14;
 
-        transition: opacity 1s $easy-out-expo;
+        transition: opacity 1s $easy-out-expo, color 1s $easy-out-expo;
         opacity: 0;
         color: $color-white;
 

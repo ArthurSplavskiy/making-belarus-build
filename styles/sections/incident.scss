@@ -144,9 +144,17 @@
         }
 
         &_empty {
-            .incident-item__head {
-                width: 39rem;
-                height: 53.3rem;
+
+            .incident-item__hover {
+                opacity: 1!important;
+                p {
+                    transform: translateY(0)!important;
+                }
+                .dots {
+                    span {
+                        transform: translateY(0)!important;
+                    }
+                }
             }
         }
         &__image {
@@ -181,6 +189,7 @@
             &.is-view {
                 p {
                     transform: translateY(0);
+                    opacity: 1;
                 }
             }
             div {
@@ -189,10 +198,11 @@
             p {
                 @extend %ramillas-24;
 
-                transition: transform 1.2s $easy-out-expo 1s;
+                transition: transform 1.2s $easy-out-expo 1s, opacity 1.2s $easy-out-expo 1s;
                 transform: translateY(110%);
                 color: $color-grey-3;
                 text-align: center; 
+                opacity: 0;
             }
         }
 

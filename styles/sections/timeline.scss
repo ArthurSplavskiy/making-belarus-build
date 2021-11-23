@@ -204,6 +204,9 @@
                 height: 24.8rem;
                 position: relative;
                 overflow: hidden;
+                img {
+                    will-change: transform, clip-path;
+                }
 
                 &._reveal {
                     
@@ -314,20 +317,24 @@
 
                     margin: 0;
                     position: relative;
+                    text-indent: 6.2rem;
                      // animation
                     opacity: 0;
                     transition: opacity 2s $easy-out-expo, transform 2s $easy-out-expo;
+                    will-change: opacity, transform;
 
                     @include media('<=tablet') {
                         transform: translateY(100px);
                     }
-                    @include media('>tablet') {
-                        transform: translateX(100px);
-                    }
+                    // @include media('>tablet') {
+                    //     transform: translateX(100px);
+                    // }
 
                     &.is-view {
                         opacity: 1;
-                        transform: translate(0);
+                        @include media('<=tablet') {
+                            transform: translate(0);
+                        }
                         // .split-child {
                         //     display: inline-block;
                         //     transform: translateY(0%);
