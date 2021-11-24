@@ -477,8 +477,8 @@ a {
 }
 
 .preloader__slide._active:not(:last-child) {
-  -webkit-animation: animationEnd 2s cubic-bezier(0.19, 1, 0.22, 1) forwards 5s;
-          animation: animationEnd 2s cubic-bezier(0.19, 1, 0.22, 1) forwards 5s;
+  -webkit-animation: animationEnd 2s cubic-bezier(0.19, 1, 0.22, 1) forwards 6s;
+          animation: animationEnd 2s cubic-bezier(0.19, 1, 0.22, 1) forwards 6s;
 }
 
 @-webkit-keyframes animationEnd {
@@ -501,10 +501,15 @@ a {
           animation-name: leftRotate;
   -webkit-animation-duration: 4.5s;
           animation-duration: 4.5s;
-  -webkit-animation-timing-function: cubic-bezier(0.68, 1, 0.59, 0.99);
-          animation-timing-function: cubic-bezier(0.68, 1, 0.59, 0.99);
+  -webkit-animation-delay: 1s;
+          animation-delay: 1s;
+  -webkit-animation-timing-function: cubic-bezier(0.54, 0.01, 0.42, 0.96);
+          animation-timing-function: cubic-bezier(0.54, 0.01, 0.42, 0.96);
   -webkit-animation-fill-mode: forwards;
           animation-fill-mode: forwards;
+  -webkit-transform: rotate(30deg);
+      -ms-transform: rotate(30deg);
+          transform: rotate(30deg);
 }
 
 .preloader__slide:nth-child(1)._active .circle-calendar .second-circle {
@@ -515,10 +520,15 @@ a {
           animation-name: rightRotate;
   -webkit-animation-duration: 4.5s;
           animation-duration: 4.5s;
-  -webkit-animation-timing-function: cubic-bezier(0.68, 1, 0.59, 0.99);
-          animation-timing-function: cubic-bezier(0.68, 1, 0.59, 0.99);
+  -webkit-animation-delay: 0.8s;
+          animation-delay: 0.8s;
+  -webkit-animation-timing-function: cubic-bezier(0.54, 0.01, 0.42, 0.96);
+          animation-timing-function: cubic-bezier(0.54, 0.01, 0.42, 0.96);
   -webkit-animation-fill-mode: forwards;
           animation-fill-mode: forwards;
+  -webkit-transform: rotate(-30deg);
+      -ms-transform: rotate(-30deg);
+          transform: rotate(-30deg);
 }
 
 .preloader__slide:nth-child(1)._active .circle-calendar .third-circle {
@@ -529,18 +539,18 @@ a {
           animation-name: leftRotate;
   -webkit-animation-duration: 4.5s;
           animation-duration: 4.5s;
-  -webkit-animation-timing-function: cubic-bezier(0.68, 1, 0.59, 0.99);
-          animation-timing-function: cubic-bezier(0.68, 1, 0.59, 0.99);
+  -webkit-animation-delay: 0.5s;
+          animation-delay: 0.5s;
+  -webkit-animation-timing-function: cubic-bezier(0.54, 0.01, 0.42, 0.96);
+          animation-timing-function: cubic-bezier(0.54, 0.01, 0.42, 0.96);
   -webkit-animation-fill-mode: forwards;
           animation-fill-mode: forwards;
+  -webkit-transform: rotate(30deg);
+      -ms-transform: rotate(30deg);
+          transform: rotate(30deg);
 }
 
 @-webkit-keyframes leftRotate {
-  from {
-    -webkit-transform: rotate(30deg);
-            transform: rotate(30deg);
-  }
-
   to {
     -webkit-transform: rotate(360deg);
             transform: rotate(360deg);
@@ -548,11 +558,6 @@ a {
 }
 
 @keyframes leftRotate {
-  from {
-    -webkit-transform: rotate(30deg);
-            transform: rotate(30deg);
-  }
-
   to {
     -webkit-transform: rotate(360deg);
             transform: rotate(360deg);
@@ -560,11 +565,6 @@ a {
 }
 
 @-webkit-keyframes rightRotate {
-  from {
-    -webkit-transform: rotate(-30deg);
-            transform: rotate(-30deg);
-  }
-
   to {
     -webkit-transform: rotate(-360deg);
             transform: rotate(-360deg);
@@ -572,11 +572,6 @@ a {
 }
 
 @keyframes rightRotate {
-  from {
-    -webkit-transform: rotate(-30deg);
-            transform: rotate(-30deg);
-  }
-
   to {
     -webkit-transform: rotate(-360deg);
             transform: rotate(-360deg);
@@ -616,6 +611,10 @@ a {
   text-transform: uppercase;
   display: block;
   margin-bottom: 7.2rem;
+  overflow: hidden;
+}
+
+.preloader__title > div {
   overflow: hidden;
 }
 
@@ -962,10 +961,6 @@ a {
 
 .header.menu-open .lang-toggle__item {
   color: #fff !important;
-}
-
-.header.menu-open .burger div {
-  background: #fff !important;
 }
 
 .header.dark-theme .logo {
@@ -1350,6 +1345,7 @@ a {
 
 .hero-section {
   height: 100vh;
+  min-height: 100vh;
   overflow: hidden;
   z-index: 6;
   -webkit-box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.3);
@@ -1444,6 +1440,7 @@ a {
 .timeline-section {
   color: #fff;
   height: 100vh;
+  min-height: 100vh;
   width: 100%;
   position: fixed;
   top: 0;
@@ -1456,6 +1453,7 @@ a {
 .timeline-section__wrapper {
   height: 100vh;
   position: relative;
+  overflow: hidden;
 }
 
 .timeline-section .scroll-container {
@@ -1667,6 +1665,7 @@ a {
 .history-section {
   color: #fff;
   height: 100vh;
+  min-height: 100vh;
   overflow: hidden;
   width: 100%;
   position: fixed;
@@ -1798,6 +1797,7 @@ a {
 .incident-section {
   color: #fff;
   height: 100vh;
+  min-height: 100vh;
   width: 100%;
   position: fixed;
   top: 0;
@@ -1969,11 +1969,13 @@ a {
 .incident-section .incident-item__hover {
   padding: 1.6rem;
   line-height: 2.24rem;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .blog-section {
   color: #000;
   height: 100vh;
+  min-height: 100vh;
   width: 100%;
   position: fixed;
   top: 0;
@@ -2252,6 +2254,10 @@ a {
 @media (min-width: 769px) {
   .preloader__bg {
     width: 100%;
+  }
+
+  .header.menu-open .burger div {
+    background: #fff !important;
   }
 
   .header__logo {
@@ -2577,7 +2583,7 @@ a {
   }
 
   .header {
-    height: 6.8rem;
+    height: 68px;
   }
 
   .header__lang {
@@ -2585,15 +2591,15 @@ a {
   }
 
   .burger {
-    width: 4.8rem;
-    height: 4.8rem;
+    width: 48px;
+    height: 48px;
     background: #fff;
     border-radius: 100%;
   }
 
   .burger div {
     background: #000;
-    width: 3rem;
+    width: 30px;
   }
 
   .burger div:first-child {
@@ -2644,9 +2650,6 @@ a {
   .timeline-section .scroll-container__bg {
     position: absolute;
     left: 50%;
-    -webkit-transform: translate(-50%, -50%) rotate(90deg);
-        -ms-transform: translate(-50%, -50%) rotate(90deg);
-            transform: translate(-50%, -50%) rotate(90deg);
   }
 
   .timeline-section .scroll-container__bg span {
@@ -2687,6 +2690,8 @@ a {
 
   .timeline-section .scroll-container .parallax-item_img-cover {
     width: 100vw;
+    height: auto;
+    padding-bottom: 78%;
   }
 
   .timeline-section .scroll-container .parallax-item_img-item.small {
@@ -2954,6 +2959,11 @@ a {
     max-width: 40px;
   }
 
+  .history-section .content .text-item p {
+    font-size: 16px;
+    line-height: 25.6px;
+  }
+
   .blog-section .blog-item_bg .content {
     position: relative;
     -webkit-transform: translate(0);
@@ -3094,18 +3104,18 @@ a {
   }
 
   .header {
-    height: 4.8rem;
+    height: 48px;
   }
 
   .burger {
-    width: 3.2rem;
-    height: 3.2rem;
+    width: 32px;
+    height: 32px;
     background: #fff;
     border-radius: 100%;
   }
 
   .burger div {
-    width: 2rem;
+    width: 20px;
   }
 
   .burger div:first-child {
@@ -3247,7 +3257,6 @@ a {
     -webkit-transition: opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1);
     -o-transition: opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1);
     transition: opacity 1.2s cubic-bezier(0.19, 1, 0.22, 1);
-    background-color: rgba(0, 0, 0, 0.5);
     opacity: 0;
   }
 

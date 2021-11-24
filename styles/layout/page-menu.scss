@@ -99,25 +99,25 @@
             height: 22.2rem;
         }
 
-        @media(any-hover: hover) {
-            &:hover {
-                .img-top, .img-bottom {
-                    path {
-                        fill: $color-redbg;
-                    }
-                }
-                .img-top {
-                    svg {
-                        transform: scale(0.1) rotate(180deg);
-                    }
-                }
-                .img-bottom {
-                    svg {
-                        transform:  scale(0.1) rotate(-180deg);
-                    }
-                }
-            }
-        }
+        // @media(any-hover: hover) {
+        //     &:hover {
+        //         .img-top, .img-bottom {
+        //             path {
+        //                 fill: $color-redbg;
+        //             }
+        //         }
+        //         .img-top {
+        //             svg {
+        //                 transform: scale(0.1) rotate(180deg);
+        //             }
+        //         }
+        //         .img-bottom {
+        //             svg {
+        //                 transform:  scale(0.1) rotate(-180deg);
+        //             }
+        //         }
+        //     }
+        // }
         &-bg {
             @extend %cover;
 

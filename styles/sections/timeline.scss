@@ -298,11 +298,6 @@
                 @include media('<=tablet') {
                     max-width: 100%;
                 }
-                
-                // .split-child {
-                //     transform: translateY(100%);
-                //     transition: transform 2s $easy-out-expo;
-                // }
 
                 .parallax-item__wrapper {
                     padding-bottom: 5.2rem;
@@ -318,6 +313,7 @@
                     margin: 0;
                     position: relative;
                     text-indent: 6.2rem;
+
                      // animation
                     opacity: 0;
                     transition: opacity 2s $easy-out-expo, transform 2s $easy-out-expo;
@@ -326,49 +322,13 @@
                     @include media('<=tablet') {
                         transform: translateY(100px);
                     }
-                    // @include media('>tablet') {
-                    //     transform: translateX(100px);
-                    // }
 
                     &.is-view {
                         opacity: 1;
                         @include media('<=tablet') {
                             transform: translate(0);
                         }
-                        // .split-child {
-                        //     display: inline-block;
-                        //     transform: translateY(0%);
-                        // }
                     }
-
-                    // & > div {
-                    //     position: relative;
-                    //     margin: 0;
-                    // }
-                    // .split-parent {
-                    //     overflow: hidden;
-                    //     white-space: nowrap;
-                    //     overflow-y: hidden;
-                    //     width: fit-content;
-                    //     overflow-x: visible;
-
-                    //     @include media('<=tablet') {
-                    //         white-space: normal;
-                    //     }
-
-                    //     &:first-child {
-                    //         .split-child:first-child {
-                    //             div:first-child {
-                    //                 div:first-child {
-                    //                     text-indent: 6.8rem;
-                    //                 }
-                    //             }  
-                    //         }
-                    //     }
-                    //   }
-                    // .split-child {
-                    //     display: inline-block; 
-                    // }
                     
                     &:not(:last-child) {
                         margin-bottom: 2.4rem;

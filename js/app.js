@@ -104,6 +104,7 @@ class Split {
     splitText (text, options = {}) {
         return new SplitText(text, options)
     }
+    
 }
 class Animation {
     constructor () {
@@ -281,9 +282,11 @@ class Header {
             
             this.menuTimeline.play()
             
-            this.menuTimeline.call(_ => {
-                this.element.classList.add('menu-open')
-            })
+            // this.menuTimeline.call(_ => {
+            //     this.element.classList.add('menu-open')
+            // })
+
+            this.element.classList.add('menu-open')
 
             this.addEventListeners()
         } else { // menu close
@@ -324,7 +327,6 @@ class Header {
     }
 
     menuSlider () {
-        this.menuSlider = this.element.querySelector('.swiper')
 
         const swiper = new Swiper('.swiper', {
             init: true,
@@ -369,7 +371,7 @@ class Header {
             type: "lines",
             linesClass: "split-child"
         })
-        this.split.splitText(this.cardsTitle, {
+        this.titleParentLines = this.split.splitText(this.cardsTitle, {
             type: "lines",
             linesClass: "split-parent"
         })
@@ -383,7 +385,6 @@ class Header {
 
         if(e.target.classList.contains('page-menu__card') || e.target.closest('.page-menu__card')) {
             const el = e.target.closest('.page-menu__card').dataset
-            console.log(el.link)
 
             switch(el.link) {
                 case 's-timeline': 
@@ -424,12 +425,20 @@ class Header {
         body_lock_remove(0, 'menu')
     }
 
+    onResize () {
+        this.titleLines.revert()
+        this.titleParentLines.revert()
+    }
+
 }
 class Preloader {
     constructor () {
         this.element = document.querySelector('.preloader')
         this.elementBg = this.element.querySelector('.preloader__bg')
         this.preloaderCover = document.querySelector('.preloader-cover')
+        this.closeSlide = this.element.querySelector('.preloader__slide:last-child')
+        this.closeTitle = this.closeSlide.querySelector('.preloader__title')
+        this.closeButton = this.closeSlide.querySelector('.preloader__button')
 
         this.heroTitles = document.querySelectorAll('.hero-composition__title')
 
@@ -448,19 +457,25 @@ class Preloader {
     slider () {
         this.sliderEl = this.element.querySelector('.preloader__slider')
         const slides = this.sliderEl.querySelectorAll('.preloader__slide')
-        const delay = 6000
+        const delay = 7000
         const steps = slides.length
         let round = 0
 
-        this.lastSlideTimeline = gsap.timeline({ defaults: { stagger: 0.1} })
-        gsap.set(this.closeTitleLines.lines, {
+        this.lastSlideTimeline = gsap.timeline({ defaults: { stagger: 0.1, duration: 0.6 } })
+
+        gsap.set(this.closeTitleLinesChild.lines, {
             y: '100%',
             opacity: 0
         })
-        this.lastSlideTimeline.to(this.closeTitleLines.lines, {
+        this.lastSlideTimeline.to(this.closeTitleLinesChild.lines, {
             y: '10%',
             opacity: 1
         })
+
+        // gsap.utils.toArray(this.closeTitleLines.lines).forEach((el, index) => {
+            
+        // })
+        
         this.lastSlideTimeline.pause()
 
         slides[0].classList.add('_active')
@@ -538,11 +553,10 @@ class Preloader {
     }
 
     close () {
-        const closeSlide = this.element.querySelector('.preloader__slide:last-child')
-        const closeTitle = closeSlide.querySelector('.preloader__title')
-        const closeButton = closeSlide.querySelector('.preloader__button')
-
-        this.closeTitleLines = this.split.splitText(closeTitle, { type: "lines,words" })
+        this.closeTitleLines = this.split.splitText(this.closeTitle, { type: "lines,words" })
+        this.closeTitleLinesChild = this.split.splitText(this.closeTitleLines.lines, {
+            linesClass: "split-parent"
+        })
 
         gsap.set(this.element, { transformOrigin: '100% 100%' })
 
@@ -570,7 +584,7 @@ class Preloader {
             })
         }
 
-        closeButton.onclick = clickHandler
+        this.closeButton.onclick = clickHandler
     }
 
     heroTitlesAnimation () {
@@ -578,7 +592,7 @@ class Preloader {
             type: "lines,words,chars",
             linesClass: "split-child"
         })
-        this.split.splitText(this.heroTitles, {
+        this.heroTitlesParentLine = this.split.splitText(this.heroTitles, {
             linesClass: "split-parent"
         })
 
@@ -587,6 +601,16 @@ class Preloader {
             opacity: 0
         })
     }
+
+    onResize () {
+        this.heroTitlesLine.revert()
+        this.heroTitlesParentLine.revert()
+        this.closeTitleLines.revert()
+        this.splitDateText.revert()
+
+        this.heroTitlesAnimation()
+    }
+
 }
 
 class HeroSection {
@@ -607,7 +631,6 @@ class HeroSection {
 
     init () {
         this.timelineAnimation()
-        //this.normalize()
     }
 
     timelineAnimation() {
@@ -631,7 +654,7 @@ class HeroSection {
         })
 
         this.timeline.to(this.heroFirstLines[0], {
-            x: - (((window.innerWidth - (this.heroFirstLines[1].clientWidth / 2)) / 2) + (this.heroFirstLines[1].clientWidth /2 )),
+            x: - (((window.innerWidth - (this.heroFirstLines[1].clientWidth / 2)) / 2) + (this.heroFirstLines[1].clientWidth /2 )), 
             ease: Power1.easeIn,
             duration: 2
         }, '>')
@@ -650,7 +673,7 @@ class HeroSection {
             scale: 0,
             autoAlpha: 0.1
         }, {
-            scale: 18,
+            scale: 1,
             autoAlpha: 1,
             ease: Power4.easeIn,
             duration: 2.5
@@ -681,10 +704,6 @@ class HeroSection {
 
     }
 
-    normalize () {
-        this.pinSpacer.style.height = this.element.offsetHeight * 10 + 'px!important'
-    }
-
 }
 class TimelineSection {
     constructor () {
@@ -703,7 +722,6 @@ class TimelineSection {
     init () {
         this.scroll()
         this.Animation()
-        //this.textSplit()
     }
 
     scroll () {
@@ -713,33 +731,43 @@ class TimelineSection {
             "(max-width: 768px)": function() {
                 const timeline = gsap.timeline({ defaults: {ease: 'none'} })
                 const rootElement = document.querySelector('.timeline-section')
+                const scrollContainerBG = rootElement.querySelector('.scroll-container__bg')
 
                 ScrollTrigger.create({
                     trigger: rootElement,
                     animation: timeline,
                     start: self => self.previous().end, // "+=8000"
                     end: '30000px 100%',
-                    pin: true, // add
+                    pin: true, 
                     scrub: 1,
                 });
 
+                gsap.set(scrollContainerBG, {
+                    xPercent: -50,
+                    yPercent: -50,
+                    rotate: '90deg'
+                })
+
                 timeline.to(rootElement, {
                     duration: 0.1,
-                    y: - (rootElement.scrollHeight + 100)
+                    y: - (rootElement.scrollHeight + 200)
                 })
+
+                timeline.to(scrollContainerBG, {
+                    duration: 0.1,
+                    y: 1000,
+                }, '<')
+
             },
 
             "(min-width: 769px)": function() {
                 const timeline = gsap.timeline({ defaults: {ease: 'none'} })
                 const rootElement = document.querySelector('.timeline-section')
-                const scrollWrapper = document.querySelector('.timeline-section__wrapper')
                 const scrollContainer = document.querySelector('.scroll-container')
                 const scrollContainerBG = document.querySelector('.scroll-container__bg')
                 const scrollIndicatorArrow = document.querySelectorAll('.scroll-indicator path, .scroll-indicator rect')
 
                 const historySection = document.querySelector('.history-section')
-
-                //console.log(30000 - rootElement.offsetHeight + "px 100%")
 
                 ScrollTrigger.create({
                     trigger: rootElement,
@@ -801,41 +829,6 @@ class TimelineSection {
 
     imageAnimationOut (el) {
         el.classList.remove('_reveal')
-    }
-
-    textSplit () {
-    
-        const animationLines = this.split.splitText(this.text, {
-            type: "lines",
-            linesClass: "split-child"
-        });
-        this.split.splitText(this.text, {
-            linesClass: "split-parent"
-        });
-
-        // stagger
-        this.text.forEach((textBox, index) => {
-            const list = textBox.querySelectorAll('.split-parent')
-
-            list.forEach((el, idx) => {
-                const listChilds = el.querySelectorAll('.split-child')
-
-                listChilds.forEach(line => {
-                    if(idx > 0) {
-                        let animationTime = idx
-
-                        if(animationTime < 10) {
-                            line.style.transitionDelay = `0.${animationTime}s`
-                        } else {
-                            line.style.transitionDelay = `${animationTime}s`
-                        }
-                        //console.log(animationTime)
-                    }
-                })
-
-            })
-        })
-
     }
 
     textAnimationIn (el) {
@@ -1014,14 +1007,14 @@ class IncidentSection {
 
         this.timeline = gsap.timeline({ defaults: {ease: 'none' } })
 
-        ScrollTrigger.create({
+        this.timelineST = ScrollTrigger.create({
             trigger: this.element,
             animation: this.timeline,
             start: self => self.previous().end,
             end: '55000px 100%',
             pin: true, 
             pinSpacing: "margin",
-            scrub: 1
+            scrub: 1,
         });
 
         if(this.scrollContainer.scrollWidth > window.innerWidth) {
@@ -1088,6 +1081,10 @@ class IncidentSection {
 
     cardAnimationOut (el) {
         el.classList.remove('is-view')
+    }
+
+    onResize () {
+        this.splitDescription.revert()
     }
 
 }
@@ -1180,7 +1177,7 @@ class BlogSection {
     }
 
     onScreen () {
-        this.observerImages = new Observer(this.images, this.imgAnimationIn, this.imgAnimationOut, { threshold: 0.5 })
+        this.observerImages = new Observer(this.images, this.imgAnimationIn, this.imgAnimationOut, { threshold: 0.75 })
         this.observerDots = new Observer(this.dots, this.imgAnimationIn, this.imgAnimationOut, { threshold: 0.5 })
     }
 
@@ -1196,11 +1193,13 @@ class BlogSection {
 
     descrAnimation() {
 
-        this.split.splitText(this.descriptions, {
-            type: "lines,words,chars",
+        this.descriptionsSplitChild = this.split.splitText(this.descriptions, {
+            type: "lines,words",
             linesClass: "split-child"
         })
-        this.split.splitText(this.descriptions, {
+        
+        this.descriptionsSplitParent = this.split.splitText(this.descriptions, {
+            type: "lines,words",
             linesClass: "split-parent"
         })
 
@@ -1221,11 +1220,11 @@ class BlogSection {
     }
 
     footerLinksSplit() {
-        this.split.splitText(this.footerLinks, {
+        this.footerLinksSplitChild = this.split.splitText(this.footerLinks, {
             type: "lines",
             linesClass: "split-child"
         })
-        this.split.splitText(this.footerLinks, {
+        this.footerLinksSplitParent = this.split.splitText(this.footerLinks, {
             type: "lines",
             linesClass: "split-parent"
         })
@@ -1253,6 +1252,16 @@ class BlogSection {
         } else {
             this.element.classList.remove('leave')
         }
+    }
+
+    onResize () {
+        this.descriptionsSplitParent.revert()
+        this.descriptionsSplitChild.revert()
+
+        this.footerLinksSplitChild.revert()
+        this.footerLinksSplitParent.revert()
+
+        this.descrAnimation()
     }
     
 }
@@ -1306,6 +1315,20 @@ class App {
     }
 
     onResize () {
+
+        if(this.blogSection) {
+            this.blogSection.onResize()
+        }
+        if(this.incidentSection) {
+            this.incidentSection.onResize()
+        }
+        if(this.header) {
+            this.header.onResize()
+        }
+        if(this.preloader) {
+            this.preloader.onResize()
+        }
+        
     }
 
     addEventListeners () {

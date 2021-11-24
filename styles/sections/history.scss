@@ -165,6 +165,8 @@
             max-width: 92rem;
             margin: 0 auto;
 
+            will-change: opacity, display;
+
             @include media('>=desktop') {
                 max-width: 140rem;
             }
