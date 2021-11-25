@@ -1,6 +1,7 @@
 .history-section {
     color: $color-white;
     height: 100vh;
+    min-height: 100vh;
     overflow: hidden;
     width: 100%;
     position: fixed;
@@ -170,8 +171,14 @@
             @include media('>=desktop') {
                 max-width: 140rem;
             }
+
             p {
                 @extend %manrope-24;
+
+                @include media('<=bigPhone') {
+                    font-size: 16px;
+                    line-height: 25.6px;
+                }
 
                 text-indent: 6.2rem;
             }

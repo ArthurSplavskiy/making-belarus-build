@@ -5,6 +5,7 @@
   background: $color-redbg;
   box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.3);
   z-index: z('preloader');
+  user-select: none;
 
   &__wrapper {
     width: 100%;
@@ -77,20 +78,26 @@
     
     height: 100%;
     opacity: 0;
+    pointer-events: none;
+    user-select: none;
+
+    @keyframes animationEnd {
+      to {
+        opacity: 0;
+      }
+    }
+    @keyframes animationEndSecond {
+      to {
+        opacity: 0;
+      }
+    }
     
 
     &._active {
       opacity: 1;
       transition: opacity 2s $easy-out-expo;
-
-      &:not(:last-child) {
-        animation: animationEnd 2s $easy-out-expo forwards 5s;
-        @keyframes animationEnd {
-          to {
-            opacity: 0;
-          }
-        }
-      }
+      pointer-events: auto;
+      user-select: auto;
     }
 
     &:nth-child(1) {
@@ -100,35 +107,35 @@
             transform-origin: 50% 50%;
             animation-name: leftRotate;
             animation-duration: 4.5s;
-            animation-timing-function: cubic-bezier(.68,1,.59,.99);
+            animation-delay: 1s;
+            animation-timing-function: cubic-bezier(.54,.01,.42,.96);
             animation-fill-mode: forwards;
+            transform: rotate(30deg);
           }
           .second-circle {
             transform-origin: 50% 50%;
             animation-name: rightRotate;
             animation-duration: 4.5s;
-            animation-timing-function: cubic-bezier(.68,1,.59,.99);
+            animation-delay: 0.8s;
+            animation-timing-function: cubic-bezier(.54,.01,.42,.96);
             animation-fill-mode: forwards;
+            transform: rotate(-30deg);
           }
           .third-circle {
             transform-origin: 50% 50%;
             animation-name: leftRotate;
             animation-duration: 4.5s;
-            animation-timing-function: cubic-bezier(.68,1,.59,.99);
+            animation-delay: 0.5s;
+            animation-timing-function: cubic-bezier(.54,.01,.42,.96); // .68,1,.59,.99
             animation-fill-mode: forwards;
+            transform: rotate(30deg);
           }
           @keyframes leftRotate {
-            from {
-                transform: rotate(30deg);
-            }
             to {
                 transform: rotate(360deg);
             }
           }
           @keyframes rightRotate {
-            from {
-                transform: rotate(-30deg);
-            }
             to {
                 transform: rotate(-360deg);
             }
@@ -210,7 +217,10 @@
     display: block;
     margin-bottom: 7.2rem;
     overflow: hidden;
-    
+
+    & > div {
+      overflow: hidden;
+    }
     
     span {
       display: block;
@@ -243,6 +253,13 @@
       width: 100%;
     }
 
+    &:hover {
+      &:before {
+        transform: scale(1.2);
+        filter: brightness(0.4);
+      }
+    }
+
     &:before {
       content: '';
       position: absolute;
@@ -252,10 +269,11 @@
       bottom: 0;
       width: 100%;
       height: 100%;
-      background: url('../../images/button.jpeg'), linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../../images/button.jpeg'), #FFFFFF;
+      transition: transform 2s $easy-out-expo, filter 2s $easy-out-expo;
+      background: url('../../images/button-bg.png'), linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../../images/button-bg.png'), #FFFFFF;
       background-size: cover;
       background-position: 70% 90%;
-      filter: brightness(0.4);
+      filter: brightness(0.6);
     }
   }
 }

@@ -1,5 +1,6 @@
 .hero-section {
     height: 100vh;
+    min-height: 100vh;
     overflow: hidden;
     z-index: z('hero-section');
     box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.3);
@@ -10,7 +11,7 @@
     }
     &__bg {
         @extend %cover;
-        filter: brightness(0.5);
+        filter: brightness(0.3);
 
         img {
             @extend %cover;
@@ -73,6 +74,7 @@
 
                 .hero-composition__description {
                     text-align: right;
+                    transform: translate3d(0, -20px, 0) scaleY(1.2);
                 }
             }
             &:nth-child(3) {
@@ -93,6 +95,7 @@
                 }
 
                 .hero-composition__title {
+
                     @include media('<=phone') {
                         width: 100%;
 
@@ -117,6 +120,8 @@
                 }
 
                 .hero-composition__description {
+                    transform: translate3d(0, 20px, 0) scaleY(1.2);
+                    
                     max-width: 21rem;
                 }
             }

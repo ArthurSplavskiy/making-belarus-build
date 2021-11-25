@@ -1,6 +1,7 @@
 .incident-section {
     color: $color-white;
     height: 100vh;
+    min-height: 100vh;
     width: 100%;
     position: fixed;
     top: 0;
@@ -212,29 +213,29 @@
 
             padding: 1.6rem;
             line-height: 2.24rem;
+            background-color: rgba($color-black, 0.5);
         }
 
         @media(any-hover: hover) {
             .incident-item__hover {
-                transition: opacity 1.2s $easy-out-expo;
-                background-color: rgba($color-black, 0.5);
+                transition: opacity 1.8s $easy-out-expo;
                 opacity: 0;
     
                 .dots {
                     span {
-                        transition: transform 1.2s $easy-out-expo;
+                        transition: transform 1.8s $easy-out-expo;
                         
                     }
                     span:first-child {
-                        transform: translateY(4rem);
+                        transform: translateY(1rem);
                     }
                     span:last-child {
-                        transform: translateY(7.5rem);
+                        transform: translateY(2.5rem);
                     }
                 }
                 p {
-                    transition: transform 1.2s $easy-out-expo;
-                    transform: translateY(8rem) scaleY(1.1);
+                    transition: transform 1.8s $easy-out-expo;
+                    transform: translateY(3rem) scaleY(1.1);
                 }
             }
             

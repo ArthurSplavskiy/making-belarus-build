@@ -108,3 +108,19 @@
     line-height: 6.5rem;
   }
 }
+
+%ramillas-220 {
+  font-family: $ramillas-font;
+  font-size: 22rem;
+  font-weight: 400;
+  line-height: 26.4rem;
+  
+  @include media('<=tablet') {
+    font-size: 25.4rem;
+    line-height: 25.4rem;
+  }
+  @include media('<=phone') {
+    font-size: 12.5rem;
+    line-height: 12.5rem;
+  }
+}

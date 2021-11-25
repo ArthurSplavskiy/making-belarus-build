@@ -1,6 +1,7 @@
 .timeline-section {
     color: $color-white;
     height: 100vh;
+    min-height: 100vh;
     width: 100%;
     position: fixed;
     top: 0;
@@ -17,6 +18,7 @@
     &__wrapper {
         height: 100vh;
         position: relative;
+        overflow: hidden;
 
         @include media('<=tablet') {
             height: auto;
@@ -56,7 +58,6 @@
             @include media('<=tablet') {
                 position: absolute;
                 left: 50%;
-                transform: translate(-50%, -50%) rotate(90deg);
             }
 
             span {
@@ -177,6 +178,8 @@
 
                 @include media('<=tablet') {
                     width: 100vw;
+                    height: auto;
+                    padding-bottom: 78%;
                 }
 
                 img {

@@ -99,25 +99,32 @@
             height: 22.2rem;
         }
 
-        // @media(any-hover: hover) {
-        //     &:hover {
-        //         .img-top, .img-bottom {
-        //             path {
-        //                 fill: $color-redbg;
-        //             }
-        //         }
-        //         .img-top {
-        //             svg {
-        //                 transform: scale(0.1) rotate(180deg);
-        //             }
-        //         }
-        //         .img-bottom {
-        //             svg {
-        //                 transform:  scale(0.1) rotate(-180deg);
-        //             }
-        //         }
-        //     }
-        // }
+        .img-top, .img-bottom {
+            path {
+                transition: fill 2s $easy-out-expo;
+            }
+        }
+
+        @media(any-hover: hover) {
+            &:hover {
+                .img-top, .img-bottom {
+                    path {
+                        fill: rgba($color-redbg, 0.2);
+                    }
+                }
+                // .img-top {
+                //     svg {
+                //         transform: scale(0.1) rotate(180deg);
+                //     }
+                // }
+                // .img-bottom {
+                //     svg {
+                //         transform:  scale(0.1) rotate(-180deg);
+                //     }
+                // }
+            }
+        }
+
         &-bg {
             @extend %cover;
 
