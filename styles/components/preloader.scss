@@ -255,7 +255,7 @@
 
     &:hover {
       &:before {
-        transform: scale(1.2);
+        //transform: scale(1.2);
         filter: brightness(0.4);
       }
     }
@@ -272,7 +272,7 @@
       transition: transform 2s $easy-out-expo, filter 2s $easy-out-expo;
       background: url('../../images/button-bg.png'), linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../../images/button-bg.png'), #FFFFFF;
       background-size: cover;
-      background-position: 70% 90%;
+      //background-position: 70% 90%;
       filter: brightness(0.6);
     }
   }

@@ -351,6 +351,14 @@ table {
   padding: 0 4.4rem;
 }
 
+.wc-transform {
+  will-change: transform;
+}
+
+.wc-opacity {
+  will-change: opacity;
+}
+
 @font-face {
   font-family: "Ramillas";
   src: url("../../fonts/ramillas-regular.woff2") format("woff2"), url("../../fonts/ramillas-regular.woff") format("woff");
@@ -392,11 +400,6 @@ a {
   color: inherit;
   outline: none;
   text-decoration: none;
-}
-
-.scroll-container,
-.split-child {
-  will-change: transform;
 }
 
 .split-parent {
@@ -682,15 +685,6 @@ a {
           filter: brightness(0.4);
 }
 
-._no-webp .preloader__button:before {
-  background: url("../../images/button-bg.png"), -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.6)), to(rgba(0, 0, 0, 0.6))), url("../../images/button-bg.png"), #FFFFFF; }
-
-._no-webp .preloader__button:before {
-  background: url("../../images/button-bg.png"), -o-linear-gradient(bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../../images/button-bg.png"), #FFFFFF; }
-
-._no-webp .preloader__button:before {
-  background: url("../../images/button-bg.png"), linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../../images/button-bg.png"), #FFFFFF; }
-
 .preloader__button:before {
   content: '';
   position: absolute;
@@ -705,6 +699,9 @@ a {
   -o-transition: transform 2s cubic-bezier(0.19, 1, 0.22, 1), filter 2s cubic-bezier(0.19, 1, 0.22, 1);
   transition: transform 2s cubic-bezier(0.19, 1, 0.22, 1), filter 2s cubic-bezier(0.19, 1, 0.22, 1);
   transition: transform 2s cubic-bezier(0.19, 1, 0.22, 1), filter 2s cubic-bezier(0.19, 1, 0.22, 1), -webkit-transform 2s cubic-bezier(0.19, 1, 0.22, 1), -webkit-filter 2s cubic-bezier(0.19, 1, 0.22, 1);
+  background: url("../../images/button-bg.png"), -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.6)), to(rgba(0, 0, 0, 0.6))), url("../../images/button-bg.png"), #FFFFFF;
+  background: url("../../images/button-bg.png"), -o-linear-gradient(bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../../images/button-bg.png"), #FFFFFF;
+  background: url("../../images/button-bg.png"), linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../../images/button-bg.png"), #FFFFFF;
   background-size: cover;
   -webkit-filter: brightness(0.6);
           filter: brightness(0.6);
@@ -921,19 +918,16 @@ a {
   display: block;
 }
 
-._no-webp .noise {
-  background: url("../images/noise.png"); }
-
 .noise {
   -webkit-animation: noise 1.2s steps(3) infinite both;
           animation: noise 1.2s steps(3) infinite both;
+  background: url("../images/noise.png");
   height: 200%;
   left: -50%;
   pointer-events: none;
   position: fixed;
   top: -50%;
   width: 200%;
-  will-change: auto;
   z-index: 11;
   opacity: .08;
 }
@@ -1365,7 +1359,6 @@ a {
 }
 
 .footer.is-view .split-child {
-  will-change: transform;
   -webkit-transform: translateY(0);
       -ms-transform: translateY(0);
           transform: translateY(0);
@@ -1713,10 +1706,6 @@ a {
   overflow: hidden;
 }
 
-.timeline-section .scroll-container .parallax-item__img img {
-  will-change: transform, clip-path;
-}
-
 .timeline-section .scroll-container .parallax-item__img._reveal img {
   -webkit-transform: scale(1);
       -ms-transform: scale(1);
@@ -1735,7 +1724,6 @@ a {
           clip-path: inset(0% 100% 0% 0%);
   -o-object-fit: cover;
      object-fit: cover;
-  will-change: transform;
   -webkit-transform: scale(1.2);
       -ms-transform: scale(1.2);
           transform: scale(1.2);
@@ -1792,7 +1780,6 @@ a {
   -o-transition: opacity 2s cubic-bezier(0.19, 1, 0.22, 1), transform 2s cubic-bezier(0.19, 1, 0.22, 1);
   transition: opacity 2s cubic-bezier(0.19, 1, 0.22, 1), transform 2s cubic-bezier(0.19, 1, 0.22, 1);
   transition: opacity 2s cubic-bezier(0.19, 1, 0.22, 1), transform 2s cubic-bezier(0.19, 1, 0.22, 1), -webkit-transform 2s cubic-bezier(0.19, 1, 0.22, 1);
-  will-change: opacity, transform;
 }
 
 .timeline-section .scroll-container .parallax-item_text p.is-view {
@@ -1860,7 +1847,6 @@ a {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  will-change: transform;
 }
 
 .history-section .line .stroke,
@@ -1893,7 +1879,6 @@ a {
   width: 100vw;
   height: 100vh;
   position: relative;
-  will-change: transform;
 }
 
 .history-section .move-bg img {
@@ -1929,7 +1914,6 @@ a {
   max-width: 92rem;
   margin: 0 auto;
   visibility: visible !important;
-  will-change: opacity, display;
 }
 
 .history-section .content .text-item p {
@@ -3481,11 +3465,3 @@ a {
             transform: translateY(0);
   }
 }
-
-._webp .preloader__button:before { background: url(../../images/button-bg.webp), -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.6)), to(rgba(0, 0, 0, 0.6))), url(../../images/button-bg.webp), #FFFFFF; }
-
-._webp .preloader__button:before { background: url(../../images/button-bg.webp), -o-linear-gradient(bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(../../images/button-bg.webp), #FFFFFF; }
-
-._webp .preloader__button:before { background: url(../../images/button-bg.webp), linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(../../images/button-bg.webp), #FFFFFF; }
-
-._webp .noise { background: url(../images/noise.webp); }

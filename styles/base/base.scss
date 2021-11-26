@@ -24,7 +24,7 @@ body {
   overscroll-behavior: none;
 
   * {
-    cursor: none!important;
+    cursor: none;
   }
 
   &._lock, &.menu-lock {
@@ -40,6 +40,7 @@ a {
 
 .scroll-container, .split-child {
   will-change: transform;
+  transform-style: preserve-3d;
 }
 
 .split-parent {
@@ -56,5 +57,13 @@ a {
 
   &.loaded {
     opacity: 1;
+  }
+}
+
+._cursor-pointer {
+  cursor: pointer;
+
+  * {
+    cursor: pointer;
   }
 }
