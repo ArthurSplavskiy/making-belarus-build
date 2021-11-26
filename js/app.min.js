@@ -206,7 +206,7 @@ class AsyncLoad {
             })
         })
 
-        //this.observer.observe(this.element)
+        this.observer.observe(this.element)
     }
 }
 
@@ -729,7 +729,7 @@ class HeroSection {
 
         this.timeline.fromTo(this.heroMap.children[0], {
             scale: 0,
-            opacity: 0.1
+            opacity: 0.4
         }, {
             scale: 1,
             opacity: 1,
@@ -872,14 +872,6 @@ class TimelineSection {
                     duration: 0.1,
                     yPercent: -100
                 })
-
-                timeline.fromTo(historySection, {
-                    duration: 0.05,
-                    filter: 'brightness(0)'
-                }, {
-                    duration: 0.05,
-                    filter: 'brightness(1)'
-                }, '<')
 
             }
 

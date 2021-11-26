@@ -380,7 +380,7 @@ body {
 }
 
 body * {
-  cursor: none !important;
+  cursor: none;
 }
 
 body._lock,
@@ -416,6 +416,14 @@ a {
 
 [data-src].loaded {
   opacity: 1;
+}
+
+._cursor-pointer {
+  cursor: pointer;
+}
+
+._cursor-pointer * {
+  cursor: pointer;
 }
 
 .preloader {
@@ -670,9 +678,6 @@ a {
 }
 
 .preloader__button:hover:before {
-  -webkit-transform: scale(1.2);
-      -ms-transform: scale(1.2);
-          transform: scale(1.2);
   -webkit-filter: brightness(0.4);
           filter: brightness(0.4);
 }
@@ -701,7 +706,6 @@ a {
   transition: transform 2s cubic-bezier(0.19, 1, 0.22, 1), filter 2s cubic-bezier(0.19, 1, 0.22, 1);
   transition: transform 2s cubic-bezier(0.19, 1, 0.22, 1), filter 2s cubic-bezier(0.19, 1, 0.22, 1), -webkit-transform 2s cubic-bezier(0.19, 1, 0.22, 1), -webkit-filter 2s cubic-bezier(0.19, 1, 0.22, 1);
   background-size: cover;
-  background-position: 70% 90%;
   -webkit-filter: brightness(0.6);
           filter: brightness(0.6);
 }
@@ -1480,8 +1484,8 @@ a {
   min-height: 100vh;
   overflow: hidden;
   z-index: 6;
-  -webkit-box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.3);
-          box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.1);
 }
 
 .hero-section__wrapper {
@@ -1581,6 +1585,8 @@ a {
   top: 0;
   left: 0;
   z-index: 5;
+  -webkit-box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.8);
+          box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.8);
   background: #9F1307;
   top: 0 !important;
 }
@@ -1808,8 +1814,8 @@ a {
   left: 0;
   z-index: 4;
   background: #000;
-  -webkit-box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.3);
-          box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.1);
   top: 0 !important;
 }
 
@@ -1940,8 +1946,8 @@ a {
   left: 0;
   z-index: 3;
   background: #000;
-  -webkit-box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.3);
-          box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   top: 0 !important;
 }
@@ -2326,7 +2332,7 @@ a {
 }
 
 .blog-section .blog-item .blog-container .text-column p {
-  line-height: 2.24rem;
+  line-height: 3rem;
   color: #404040;
   margin-bottom: 2.4rem;
 }
