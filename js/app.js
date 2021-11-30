@@ -204,7 +204,8 @@ class Cursor {
         this.pageElement = document.querySelector('.page-cursor')
         this.cursorSlider = this.element.querySelector('.c-cursor__slider')
 
-        this.cursorContainer = document.querySelector('.page-menu .swiper-wrapper')
+        this.cursorContainer = document.querySelector('.page-menu .swiper')
+        this.controlsContainer = document.querySelector('.page-menu__slider-controls')
 
         this.activeCursorLinks = document.querySelectorAll('._cursor-pointer')
 
@@ -217,7 +218,17 @@ class Cursor {
         this.element.style.left = x + 'px';
         this.element.style.top = y + 'px';
 
+        // gsap.to(this.element, .5, {
+        //     top:  y,
+        //     left: x
+        // })
+
         if(this.element.classList.contains('above-slider')) {
+            gsap.to(this.element, .5, {
+                top:  y,
+                left: x
+            })
+
             if(x < (window.innerWidth / 2)) {
                 if(this.cursorSlider.classList.contains('right')) {
                     this.cursorSlider.classList.remove('right')
@@ -228,6 +239,7 @@ class Cursor {
                 }
             }
         }
+        
     }
 
     setCursorSwiper () {
@@ -256,6 +268,9 @@ class Cursor {
         this.cursorContainer.addEventListener('mouseenter', this.setCursorSwiper.bind(this));
         this.cursorContainer.addEventListener('mouseleave', this.removeCursorSwiper.bind(this));
 
+        this.controlsContainer.addEventListener('mouseenter', this.removeCursorSwiper.bind(this));
+        this.controlsContainer.addEventListener('mouseleave', this.setCursorSwiper.bind(this));
+
         this.activeCursorLinks.forEach(link => {
             link.addEventListener('mouseenter', this.setCursorPointer.bind(this));
             link.addEventListener('mouseleave', this.removeCursorPointer.bind(this));
@@ -266,10 +281,12 @@ class Header {
     constructor () {
         this.element = document.querySelector('.header')
         this.pageMenu = document.querySelector('.page-menu')
+        this.сursor = document.querySelector('.c-cursor')
+        this.cursorSlider = document.querySelector('.c-cursor__slider')
 
         this.cards = this.pageMenu.querySelectorAll('.page-menu__card')
         this.cardsTitle = this.pageMenu.querySelectorAll('.page-menu__card-title')
-        this.slider = this.pageMenu.querySelector('.page-menu__slider')
+        this.slider = this.pageMenu.querySelector('.page-menu__slider-wrapper')
 
         this.split = new Split()
 
@@ -318,13 +335,13 @@ class Header {
             duration: 0.5,
             autoAlpha: 1
         })
-        this.menuTimeline.fromTo(this.titleLines.lines, {
+        this.menuTimeline.fromTo(this.titleLines.chars, {
             y: '100%',
             opacity: 0
         }, {
             duration: 1,
             ease: Power1.easeOut,
-            stagger: 0.09,
+            //stagger: 0.09,
             y: '0%',
             opacity: 1
         }, '-=0.5')
@@ -344,6 +361,7 @@ class Header {
             spaceBetween: 40,
             grabCursor: true,
             speed: 800,
+            grabCursor: true,
 
             navigation: {
               nextEl: '.swiper-button-next',
@@ -374,18 +392,34 @@ class Header {
                 swiper.enable()
             }
         })
+
+        swiper.on('touchMove', (e) => {
+            // this.сursor.style.top = e.touches.currentY + 'px';
+            // this.сursor.style.left = e.touches.currentX + 'px';
+
+            gsap.to(this.сursor, .5, {
+                top:  e.touches.currentY,
+		        left: e.touches.currentX
+            })
+        })
+        swiper.on('touchStart', () => {
+            this.slider.classList.add('grabbing')
+        })
+        swiper.on('touchEnd', () => {
+            this.slider.classList.remove('grabbing')
+        })
         
     }
 
     splitCardsTitle () {
         this.titleLines = this.split.splitText(this.cardsTitle, {
-            type: "lines",
+            type: "lines,words,chars",
             linesClass: "split-child"
         })
-        this.titleParentLines = this.split.splitText(this.cardsTitle, {
-            type: "lines",
-            linesClass: "split-parent"
-        })
+        // this.titleParentLines = this.split.splitText(this.cardsTitle, {
+        //     type: "lines",
+        //     linesClass: "split-parent"
+        // })
     }
 
     anchorsTransition (e) {

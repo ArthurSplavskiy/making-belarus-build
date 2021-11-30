@@ -244,9 +244,11 @@
     border-radius: 6.1rem;
     position: relative;
     overflow: hidden;
+    z-index: 2;
 
     span {
       position: relative;
+      z-index: 1;
     }
 
     @include media('<=phone') {
@@ -255,7 +257,7 @@
 
     &:hover {
       &:before {
-        //transform: scale(1.2);
+        transform: scale(1.2);
         filter: brightness(0.4);
       }
     }
@@ -270,10 +272,10 @@
       width: 100%;
       height: 100%;
       transition: transform 2s $easy-out-expo, filter 2s $easy-out-expo;
-      background: url('../../images/button-bg.png'), linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../../images/button-bg.png'), #FFFFFF;
+      background: url('../../images/button-bg.png');
       background-size: cover;
-      //background-position: 70% 90%;
       filter: brightness(0.6);
+      z-index: 1;
     }
   }
 }

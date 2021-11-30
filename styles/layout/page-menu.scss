@@ -34,6 +34,10 @@
         width: 100%;
         min-width: 0;
         color: $color-white;
+        cursor: grab;
+        * {
+            cursor: grab;
+        }
 
         .swiper-wrapper {
             @include media('<=bigPhone') {
@@ -45,6 +49,13 @@
                     min-width: 100%;
                 }
             }
+
+            &.grabbing {
+                cursor: grabbing;
+                * {
+                    cursor: grabbing;
+                }
+            }
         }
     }
 
@@ -52,6 +63,10 @@
         display: flex;
         align-items: center;
         margin-top: 4rem;
+        cursor: none;
+        * {
+            cursor: none;
+        }
 
         @include media('<=bigPhone') {
             display: none;
@@ -163,6 +178,7 @@
 
             width: 100%;
             text-align: center;
+            position: relative;
         }
     }
 }

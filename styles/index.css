@@ -1233,6 +1233,23 @@ a {
   width: 100%;
   min-width: 0;
   color: #fff;
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+.page-menu__slider * {
+  cursor: -webkit-grab;
+  cursor: grab;
+}
+
+.page-menu__slider .swiper-wrapper.grabbing {
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
+}
+
+.page-menu__slider .swiper-wrapper.grabbing * {
+  cursor: -webkit-grabbing;
+  cursor: grabbing;
 }
 
 .page-menu__slider-controls {
@@ -1243,6 +1260,11 @@ a {
       -ms-flex-align: center;
           align-items: center;
   margin-top: 4rem;
+  cursor: none;
+}
+
+.page-menu__slider-controls * {
+  cursor: none;
 }
 
 .page-menu__slider-controls .swiper-button-prev.swiper-button-disabled svg,
@@ -1321,6 +1343,41 @@ a {
 .page-menu__card-title {
   width: 100%;
   text-align: center;
+  position: relative;
+}
+
+.page-menu__card-title .split-child {
+  position: absolute !important;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+.page-menu__card-title .split-child .clone > div,
+.page-menu__card-title .split-child .native > div {
+  overflow: hidden;
+}
+
+.page-menu__card-title .split-child .clone > div > div,
+.page-menu__card-title .split-child .native > div > div {
+  -webkit-transition: -webkit-transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+  transition: -webkit-transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+  -o-transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+  transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+  transition: transform 1.2s cubic-bezier(0.19, 1, 0.22, 1), -webkit-transform 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.page-menu__card-title .split-child .clone > div > div {
+  -webkit-transform: translate(0, 100%) !important;
+      -ms-transform: translate(0, 100%) !important;
+          transform: translate(0, 100%) !important;
+}
+
+.page-menu__card-title .split-child > div {
+  overflow: hidden;
 }
 
 .dots {
@@ -3397,6 +3454,18 @@ a {
   .page-menu__card:hover .img-top path,
   .page-menu__card:hover .img-bottom path {
     fill: rgba(159, 19, 7, 0.2);
+  }
+
+  .page-menu__card:hover .page-menu__card-title .native > div > div {
+    -webkit-transform: translate(0, -100%) !important;
+        -ms-transform: translate(0, -100%) !important;
+            transform: translate(0, -100%) !important;
+  }
+
+  .page-menu__card:hover .page-menu__card-title .clone > div > div {
+    -webkit-transform: translate(0) !important;
+        -ms-transform: translate(0) !important;
+            transform: translate(0) !important;
   }
 
   .incident-section .incident-item .incident-item__hover {
