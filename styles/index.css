@@ -882,9 +882,16 @@ a {
 }
 
 .c-cursor .page-cursor {
-  -webkit-transform: translate(-50%, -50%) rotate(90deg);
-      -ms-transform: translate(-50%, -50%) rotate(90deg);
-          transform: translate(-50%, -50%) rotate(90deg);
+  -webkit-transform: translate(-50%, -50%) rotate(45deg);
+      -ms-transform: translate(-50%, -50%) rotate(45deg);
+          transform: translate(-50%, -50%) rotate(45deg);
+  width: 14px;
+  height: 14px;
+  background: rgba(159, 19, 7, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  -webkit-transform-origin: 50% 50%;
+      -ms-transform-origin: 50% 50%;
+          transform-origin: 50% 50%;
   pointer-events: none;
   -webkit-user-select: none;
      -moz-user-select: none;

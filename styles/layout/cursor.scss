@@ -18,11 +18,11 @@
 
     .page-cursor {
         transform: translate(-50%, -50%) rotate(90deg);
-        // width: 14.4px;
-        // height: 14.4px;
-        // background: rgba(159, 19, 7, 0.8);
-        // border: 1px solid rgba(255, 255, 255, 0.4);
-        // transform-origin: 50% 50%;
+        width: 14px;
+        height: 14px;
+        background: rgba(159, 19, 7, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        transform-origin: 50% 50%;
         pointer-events: none;
         user-select: none;
     }

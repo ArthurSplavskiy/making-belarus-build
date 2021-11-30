@@ -251,9 +251,9 @@
       z-index: 1;
     }
 
-    @include media('<=phone') {
-      width: 100%;
-    }
+    // @include media('<=phone') {
+    //   width: 100%;
+    // }
 
     &:hover {
       &:before {

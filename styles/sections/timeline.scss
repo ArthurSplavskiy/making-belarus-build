@@ -320,9 +320,9 @@
                     transition: opacity 2s $easy-out-expo, transform 2s $easy-out-expo;
                     //: opacity, transform;
 
-                    @include media('<=tablet') {
-                        transform: translateY(100px);
-                    }
+                    // @include media('<=tablet') {
+                    //     transform: translateY(100px);
+                    // }
 
                     // &.is-view {
                     //     opacity: 1;
