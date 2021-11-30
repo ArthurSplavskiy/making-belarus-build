@@ -15,3 +15,10 @@
         width: calc(100% - 32px);
     }
 }
+
+.wc-transform {
+    will-change: transform;
+}
+.wc-opacity {
+    will-change: opacity;
+}

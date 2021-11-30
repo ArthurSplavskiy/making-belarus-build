@@ -208,17 +208,14 @@
                 height: 24.8rem;
                 position: relative;
                 overflow: hidden;
-                img {
-                    will-change: transform, clip-path;
-                }
 
-                &._reveal {
+                // &._reveal {
                     
-                    img {
-                        transform: scale(1);
-                        clip-path: inset(0% 0% 0% 0%);
-                    }
-                }
+                //     img {
+                //         transform: scale(1);
+                //         clip-path: inset(0% 0% 0% 0%);
+                //     }
+                // }
 
                 &:not(.parallax-item__img_small) {
                     @include media('<=tablet') {
@@ -246,10 +243,10 @@
                 img {
                     @extend %cover;
 
-                    clip-path: inset(0% 100% 0% 0%);
+                    //clip-path: inset(0% 100% 0% 0%);
                     object-fit: cover;
-                    will-change: transform;
-                    transform: scale(1.2);
+                    //will-change: transform;
+                    //transform: scale(1.2);
                     transition: transform 2s $easy-out-expo, clip-path 1.5s $easy-out-expo;
                 }
             }
@@ -319,20 +316,20 @@
                     text-indent: 6.2rem;
 
                      // animation
-                    opacity: 0;
+                    //opacity: 0;
                     transition: opacity 2s $easy-out-expo, transform 2s $easy-out-expo;
-                    will-change: opacity, transform;
+                    //: opacity, transform;
 
                     @include media('<=tablet') {
                         transform: translateY(100px);
                     }
 
-                    &.is-view {
-                        opacity: 1;
-                        @include media('<=tablet') {
-                            transform: translate(0);
-                        }
-                    }
+                    // &.is-view {
+                    //     opacity: 1;
+                    //     @include media('<=tablet') {
+                    //         transform: translate(0);
+                    //     }
+                    // }
                     
                     &:not(:last-child) {
                         margin-bottom: 2.4rem;

@@ -177,7 +177,7 @@ class AsyncLoad {
     constructor (element) {
         this.element = element
 
-        this.createObserver()
+        //this.createObserver()
     }
 
     createObserver () {
@@ -715,7 +715,7 @@ class HeroSection {
             onComplete: () => this.heroFirstLines[2].classList.remove('wc-transform')
         }, '<')
 
-        this.timeline.fromTo(this.heroMap.children[0], {
+        this.timeline.fromTo(this.heroMap, {
             scale: 0,
             opacity: 0.4
         }, {
@@ -723,8 +723,8 @@ class HeroSection {
             opacity: 1,
             ease: Power4.easeIn,
             duration: 2.5,
-            onStart: () => this.heroMap.children[0].classList.add('wc-transform'),
-            onComplete: () => this.heroMap.children[0].classList.remove('wc-transform')
+            onStart: () => this.heroMap.classList.add('wc-transform'),
+            onComplete: () => this.heroMap.classList.remove('wc-transform')
         }, '=-1.5')
 
         this.timeline.to(this.element, {
@@ -773,7 +773,7 @@ class TimelineSection {
 
     init () {
         this.scroll()
-        this.Animation()
+        //this.Animation()
     }
 
     scroll () {
@@ -857,16 +857,16 @@ class TimelineSection {
                     onComplete: () => scrollContainerBG.classList.remove('wc-transform')
                 }, '<')
 
-                timeline.to(parallaxImageText, {
-                    x: 40,
-                    onStart: () => parallaxImageText.classList.add('wc-transform'),
-                    onComplete: () => parallaxImageText.classList.remove('wc-transform')
-                }, '<')
-                timeline.to(parallaxImages, {
-                    x: -40,
-                    onStart: () => parallaxImages.classList.add('wc-transform'),
-                    onComplete: () => parallaxImages.classList.remove('wc-transform')
-                }, '<')
+                // timeline.to(parallaxImageText, {
+                //     x: 40,
+                //     onStart: () => parallaxImageText.classList.add('wc-transform'),
+                //     onComplete: () => parallaxImageText.classList.remove('wc-transform')
+                // }, '<')
+                // timeline.to(parallaxImages, {
+                //     x: -40,
+                //     onStart: () => parallaxImages.classList.add('wc-transform'),
+                //     onComplete: () => parallaxImages.classList.remove('wc-transform')
+                // }, '<')
 
                 timeline.to(rootElement, {
                     duration: 0.02,
@@ -967,7 +967,8 @@ class HistorySection {
         })
 
         gsap.set(this.content, {
-            yPercent: -200
+            yPercent: -200,
+            z: '1px'
         })
 
         gsap.set(this.textItems, {
@@ -979,16 +980,16 @@ class HistorySection {
             duration: 2,
             x: - (window.innerWidth + residualOffsetLeftLine),
             opacity: 0.2,
-            onStart: () => scrollContainer.classList.add('wc-transform'),
-            onComplete: () => scrollContainer.classList.remove('wc-transform')
+            // onStart: () => this.toLeftLine.classList.add('wc-transform'),
+            // onComplete: () => this.toLeftLine.classList.remove('wc-transform')
         })
 
         this.timeline.to(this.toRightLine, {
             duration: 2,
             x: (window.innerWidth + residualOffsetRightLine),
             opacity: 0.2,
-            onStart: () => scrollContainer.classList.add('wc-transform'),
-            onComplete: () => scrollContainer.classList.remove('wc-transform')
+            // onStart: () => this.toRightLine.classList.add('wc-transform'),
+            // onComplete: () => this.toRightLine.classList.remove('wc-transform')
         }, '<')
 
         this.timeline.to(this.toFillStar, {
@@ -1005,13 +1006,13 @@ class HistorySection {
             duration: 1.5,
             yPercent: -100,
             onStart: () => this.moveBg.classList.add('wc-transform')
-        }, '-=1')
+        }, '-=2')
 
         this.timeline.to(this.moveBg, {
             duration: 1.1,
             scale: 1,
             onComplete: () => this.moveBg.classList.remove('wc-transform')
-        })
+        }, '-=0.5')
 
         this.timeline.fromTo(this.moveBg, {
             filter: 'brightness(1)'
@@ -1037,8 +1038,8 @@ class HistorySection {
         this.timeline.to(this.element, {
             duration: 1.6,
             yPercent: -100,
-            onStart: () => item.classList.add('wc-transform'),
-            onComplete: () => item.classList.remove('wc-transform')
+            onStart: () => this.element.classList.add('wc-transform'),
+            onComplete: () => this.element.classList.remove('wc-transform')
         })
 
         /*

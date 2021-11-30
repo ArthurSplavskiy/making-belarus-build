@@ -674,13 +674,18 @@ a {
   border-radius: 6.1rem;
   position: relative;
   overflow: hidden;
+  z-index: 2;
 }
 
 .preloader__button span {
   position: relative;
+  z-index: 1;
 }
 
 .preloader__button:hover:before {
+  -webkit-transform: scale(1.2);
+      -ms-transform: scale(1.2);
+          transform: scale(1.2);
   -webkit-filter: brightness(0.4);
           filter: brightness(0.4);
 }
@@ -699,12 +704,11 @@ a {
   -o-transition: transform 2s cubic-bezier(0.19, 1, 0.22, 1), filter 2s cubic-bezier(0.19, 1, 0.22, 1);
   transition: transform 2s cubic-bezier(0.19, 1, 0.22, 1), filter 2s cubic-bezier(0.19, 1, 0.22, 1);
   transition: transform 2s cubic-bezier(0.19, 1, 0.22, 1), filter 2s cubic-bezier(0.19, 1, 0.22, 1), -webkit-transform 2s cubic-bezier(0.19, 1, 0.22, 1), -webkit-filter 2s cubic-bezier(0.19, 1, 0.22, 1);
-  background: url("../../images/button-bg.png"), -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.6)), to(rgba(0, 0, 0, 0.6))), url("../../images/button-bg.png"), #FFFFFF;
-  background: url("../../images/button-bg.png"), -o-linear-gradient(bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../../images/button-bg.png"), #FFFFFF;
-  background: url("../../images/button-bg.png"), linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("../../images/button-bg.png"), #FFFFFF;
+  background: url("../../images/button-bg.png");
   background-size: cover;
   -webkit-filter: brightness(0.6);
           filter: brightness(0.6);
+  z-index: 1;
 }
 
 .timer {
@@ -1481,6 +1485,13 @@ a {
           box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.1);
 }
 
+.hero-section canvas {
+  z-index: 9999;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 .hero-section__wrapper {
   position: relative;
   height: 100%;
@@ -1706,27 +1717,14 @@ a {
   overflow: hidden;
 }
 
-.timeline-section .scroll-container .parallax-item__img._reveal img {
-  -webkit-transform: scale(1);
-      -ms-transform: scale(1);
-          transform: scale(1);
-  -webkit-clip-path: inset(0% 0% 0% 0%);
-          clip-path: inset(0% 0% 0% 0%);
-}
-
 .timeline-section .scroll-container .parallax-item__img_small {
   width: 24.8rem;
   height: 24.8rem;
 }
 
 .timeline-section .scroll-container .parallax-item__img img {
-  -webkit-clip-path: inset(0% 100% 0% 0%);
-          clip-path: inset(0% 100% 0% 0%);
   -o-object-fit: cover;
      object-fit: cover;
-  -webkit-transform: scale(1.2);
-      -ms-transform: scale(1.2);
-          transform: scale(1.2);
   -webkit-transition: -webkit-transform 2s cubic-bezier(0.19, 1, 0.22, 1), -webkit-clip-path 1.5s cubic-bezier(0.19, 1, 0.22, 1);
   transition: -webkit-transform 2s cubic-bezier(0.19, 1, 0.22, 1), -webkit-clip-path 1.5s cubic-bezier(0.19, 1, 0.22, 1);
   -o-transition: transform 2s cubic-bezier(0.19, 1, 0.22, 1), clip-path 1.5s cubic-bezier(0.19, 1, 0.22, 1);
@@ -1774,16 +1772,11 @@ a {
   margin: 0;
   position: relative;
   text-indent: 6.2rem;
-  opacity: 0;
   -webkit-transition: opacity 2s cubic-bezier(0.19, 1, 0.22, 1), -webkit-transform 2s cubic-bezier(0.19, 1, 0.22, 1);
   transition: opacity 2s cubic-bezier(0.19, 1, 0.22, 1), -webkit-transform 2s cubic-bezier(0.19, 1, 0.22, 1);
   -o-transition: opacity 2s cubic-bezier(0.19, 1, 0.22, 1), transform 2s cubic-bezier(0.19, 1, 0.22, 1);
   transition: opacity 2s cubic-bezier(0.19, 1, 0.22, 1), transform 2s cubic-bezier(0.19, 1, 0.22, 1);
   transition: opacity 2s cubic-bezier(0.19, 1, 0.22, 1), transform 2s cubic-bezier(0.19, 1, 0.22, 1), -webkit-transform 2s cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-.timeline-section .scroll-container .parallax-item_text p.is-view {
-  opacity: 1;
 }
 
 .timeline-section .scroll-container .parallax-item_text p:not(:last-child) {
@@ -1879,6 +1872,7 @@ a {
   width: 100vw;
   height: 100vh;
   position: relative;
+  z-index: 1;
 }
 
 .history-section .move-bg img {
@@ -1897,6 +1891,7 @@ a {
   width: 100vw;
   height: 100vh;
   position: relative;
+  z-index: 2;
 }
 
 .history-section .content__wrapper {
@@ -2342,10 +2337,6 @@ a {
   padding-bottom: 67%;
 }
 
-.blog-section .blog-item .blog-container .media-column .img-wrapper_big {
-  padding-bottom: 150%;
-}
-
 .blog-section .blog-item .blog-container .media-column .img-wrapper_middle {
   padding-bottom: 124%;
 }
@@ -2354,6 +2345,9 @@ a {
   position: absolute;
   top: 0;
   left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
   -o-object-fit: cover;
      object-fit: cover;
 }
@@ -2888,12 +2882,6 @@ a {
     -webkit-transform: translateY(100px);
         -ms-transform: translateY(100px);
             transform: translateY(100px);
-  }
-
-  .timeline-section .scroll-container .parallax-item_text p.is-view {
-    -webkit-transform: translate(0);
-        -ms-transform: translate(0);
-            transform: translate(0);
   }
 
   .history-section .line .stroke,

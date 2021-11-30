@@ -39,8 +39,8 @@ a {
 }
 
 .scroll-container, .split-child {
-  will-change: transform;
-  transform-style: preserve-3d;
+  //will-change: transform;
+  //transform-style: preserve-3d;
 }
 
 .split-parent {
@@ -66,4 +66,8 @@ a {
   * {
     cursor: pointer;
   }
+}
+
+.preloader {
+  //display: none;
 }

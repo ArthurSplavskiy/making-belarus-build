@@ -11,7 +11,7 @@
     // animation
     &.is-view {
         .split-child {
-            will-change: transform;
+            //will-change: transform;
             transform: translateY(0);
             opacity: 1;
         } 
