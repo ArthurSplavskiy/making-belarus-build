@@ -12,14 +12,13 @@
     // animation
     &.is-view {
         .split-child {
-            //will-change: transform;
-            transform: translateY(0);
+            transform: translate3d(0, 0, 0);
             opacity: 1;
         } 
     }
     .split-child {
         transition: transform 2s $easy-out-expo, opacity 2s $easy-out-expo;
-        transform: translateY(100%);
+        transform: translate3d(0, 100%, 0);
         opacity: 0;
     }
 

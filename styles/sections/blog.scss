@@ -4,7 +4,6 @@
     min-height: 100vh;
     width: 100%;
     position: fixed;
-    top: 0;
     left: 0;
     z-index: z('blog-section');
     top: 0!important;//add
@@ -64,22 +63,30 @@
             overflow: hidden;
         }
         .dots {
-            span {
-                transition: transform 1.5s $easy-out-expo;
-                opacity: 0;
-            }
-            span:first-child {
-                transform: translateY(4rem);
-            }
-            span:last-child {
-                transform: translateY(7.5rem);
-            }
-            &.is-view {
-                span {
-                    opacity: 1;
-                    transform: translate(0);
-                }
-            }
+            // span {
+            //     transition: transform 1.5s $easy-out-expo;
+            //     opacity: 0;
+            //     animation: fadeIn 1.5s $easy-out-expo;
+            //     @keyframes fadeIn {
+            //         to {
+            //             opacity: 1;
+            //             transform: translate(0);
+            //         }
+            //     }
+            //     animation-play-state: paused;
+            // }
+            // span:first-child {
+            //     transform: translateY(4rem);
+            // }
+            // span:last-child {
+            //     transform: translateY(7.5rem);
+            // }
+            // &.is-view {
+            //     span {
+            //         animation-play-state: running;
+            //         animation-fill-mode: forwards;
+            //     }
+            // }
         }
 
         &:not(:last-child) {

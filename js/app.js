@@ -924,9 +924,9 @@ class TimelineSection {
                 //     onComplete: () => parallaxImages.classList.remove('wc-transform')
                 // }, '<')
 
-                this.timeline.to(this.element, {
-                    duration: 0.02,
-                })
+                // this.timeline.to(this.element, {
+                //     duration: 0.02,
+                // })
 
                 this.timeline.to(this.element, {
                     duration: 0.1,
@@ -1469,6 +1469,17 @@ class App {
     }
 
     init () {
+        /*
+          * Settings
+        */
+        gsap.config({
+            // autoSleep: 60,
+            force3D: true,
+            nullTargetWarn: false,
+            trialWarn: false,
+            units: {left: "%", top: "%", rotation: "rad"}
+        });
+
         /*
           * Elements
         */

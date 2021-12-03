@@ -7,9 +7,9 @@
     position: fixed;
     top: -50%;
     width: 200%;
-    //will-change: auto;
+    will-change: transform;
     z-index: z('noise');
-    opacity: .08;
+    opacity: .1;
 }
 
 @keyframes noise {

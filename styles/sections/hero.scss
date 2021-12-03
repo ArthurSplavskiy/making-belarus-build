@@ -5,17 +5,6 @@
     z-index: z('hero-section');
     box-shadow: 0px 130px 160px rgba(0, 0, 0, 0.1);
 
-    &.animated {
-        // will-change:
-    }
-
-    canvas {
-        z-index: 9999;
-        position: absolute;
-        top: 0;
-        left: 0;
-    }
-
     &__wrapper {
         position: relative;
         height: 100%;
@@ -63,7 +52,6 @@
            transform: translate(-50%, -50%);
 
            img {
-               transform: translateZ(0.1);
                will-change: transform, opacity;
            }
         }
@@ -90,7 +78,6 @@
 
                 .hero-composition__description {
                     text-align: right;
-                    transform: translate3d(0, -20px, 0) scaleY(1.2);
                 }
             }
             &:nth-child(3) {
@@ -134,10 +121,6 @@
                         margin-top: 1.6rem;
                     }
                 }
-
-                .hero-composition__description {
-                    transform: translate3d(0, 20px, 0) scaleY(1.2);
-                }
             }
         }
         &__title {
@@ -159,6 +142,8 @@
         }
         &__description {
             @extend %manrope-14;
+
+            opacity: 0;
 
             @include media('<=bigPhone') {
                 line-height: 1.92rem;
