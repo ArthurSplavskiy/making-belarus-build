@@ -63,8 +63,8 @@
            transform: translate(-50%, -50%);
 
            img {
-               //transform: translateZ(0.1);
-               //will-change: transform;
+               transform: translateZ(0.1);
+               will-change: transform, opacity;
            }
         }
 

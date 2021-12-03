@@ -2,6 +2,7 @@
     color: $color-white;
     height: 100vh;
     width: 100%;
+    background: $color-redbg;
     position: fixed;
     top: 0;
     left: 0;
@@ -68,6 +69,7 @@
                     color: rgba($color-white, 0.5);
                 }
                 .social-link {
+                    overflow: hidden;
                     @extend %ramillas-124;
 
                     @include media('<=tablet') {

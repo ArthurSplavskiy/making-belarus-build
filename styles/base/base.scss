@@ -20,8 +20,10 @@ html {
 body {
   font-family: $manrope-font;
   cursor: none;
-  background: $color-redbg;
+  background: $color-black;
   overscroll-behavior: none;
+  // overflow-y: auto!important;
+  // overflow-x: hidden!important;
 
   * {
     cursor: none;
